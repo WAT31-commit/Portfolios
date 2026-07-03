@@ -1,6 +1,11 @@
 "use client";
 
-import { CHAPTER_ORDER, TOTAL_PANELS, useProgress } from "@/lib/progress-context";
+import {
+  CHAPTER_ORDER,
+  CHAPTER_START_FRACTIONS,
+  TOTAL_PANELS,
+  useProgress,
+} from "@/lib/progress-context";
 import { useScrollToChapter } from "@/lib/useScrollToChapter";
 import { useJourneyProgress } from "@/lib/useJourneyProgress";
 import { chapters } from "@/data/journey";
@@ -11,10 +16,10 @@ export function WorldMap() {
   const { activeChapter, isUnlocked } = useProgress();
   const scrollToChapter = useScrollToChapter();
 
-  // Raw progress spans the whole track (Hero + 6 chapters). Remap it so
-  // Gandalf's token sits at the very start of the path while you're still
-  // in the Hero panel, then walks smoothly waypoint-to-waypoint as you
-  // scroll through the six chapters.
+  // Raw progress spans the whole track (Hero + all chapter panels, with the
+  // Shire counting as 5 — its bio intro plus 4 milestone scenes). Remap it
+  // so Gandalf sits at the very start of the road while still in the Hero
+  // panel, then treks smoothly along it, panel by panel, as you swipe right.
   const rawProgress = useJourneyProgress();
   const heroFraction = 1 / TOTAL_PANELS;
   const chapterProgress = useTransform(rawProgress, [heroFraction, 1], [0, 1], {
@@ -24,30 +29,42 @@ export function WorldMap() {
 
   return (
     <nav
-      aria-label="Journey map — Gandalf's path"
-      className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-black/60 px-4 py-3 backdrop-blur-md sm:px-10"
+      aria-label="Journey map — Gandalf's road"
+      className="fixed bottom-0 left-0 right-0 z-40 bg-black/60 px-4 pb-3 pt-2 backdrop-blur-md sm:px-12"
     >
-      <div className="relative mx-auto max-w-3xl pt-6">
+      <div className="relative mx-auto max-w-3xl pt-8">
+        {/* The road: dirt path banked by grass verges, English-village style */}
         <div
-          className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-white/5 via-white/25 to-white/5"
+          className="absolute inset-x-0 top-1/2 h-6 -translate-y-1/2 rounded-full bg-gradient-to-b from-[#8a6a45] via-[#6b4a2f] to-[#5a3d26] shadow-[0_1px_0_rgba(255,255,255,0.08)_inset]"
           aria-hidden="true"
-        />
+        >
+          <div className="absolute inset-x-0 -top-1.5 h-1.5 rounded-full bg-gradient-to-b from-emerald-800/80 to-transparent" />
+          <div className="absolute inset-x-0 -bottom-1.5 h-1.5 rounded-full bg-gradient-to-t from-emerald-900/80 to-transparent" />
+          <div
+            className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.35)_0px,rgba(255,255,255,0.35)_8px,transparent_8px,transparent_18px)]"
+            aria-hidden="true"
+          />
+        </div>
 
         <motion.div
-          className="pointer-events-none absolute top-1/2 z-10 h-9 w-9 -translate-x-1/2 -translate-y-[62%]"
+          className="pointer-events-none absolute top-1/2 z-10 h-14 w-14 -translate-x-1/2 -translate-y-[68%]"
           style={{ left: gandalfLeft }}
         >
-          <GandalfToken className="h-9 w-9" />
+          <GandalfToken className="h-14 w-14" walking />
         </motion.div>
 
-        <ul className="relative flex items-center justify-between">
+        <ul className="relative h-9">
           {CHAPTER_ORDER.map((id) => {
             const meta = chapters.find((c) => c.id === id)!;
             const unlocked = isUnlocked(id);
             const active = activeChapter === id;
 
             return (
-              <li key={id}>
+              <li
+                key={id}
+                className="absolute top-0 -translate-x-1/2"
+                style={{ left: `${CHAPTER_START_FRACTIONS[id] * 100}%` }}
+              >
                 <button
                   type="button"
                   disabled={!unlocked}

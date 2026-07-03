@@ -19,9 +19,37 @@ export const CHAPTER_ORDER: ChapterId[] = [
 ];
 
 // The journey track is one horizontal row of panels: the hero, then one
-// panel per chapter. Used to remap raw 0-1 scroll progress (across the
-// whole track) into 0-1 progress across just the chapter waypoints.
-export const TOTAL_PANELS = CHAPTER_ORDER.length + 1;
+// panel per chapter — except the Shire, which spans its bio intro plus 4
+// milestone scenes. Used to remap raw 0-1 scroll progress (across the whole
+// track) into 0-1 progress across just the chapter waypoints, and to place
+// each waypoint at its true proportional position along the road.
+export const CHAPTER_PANEL_COUNTS: Record<ChapterId, number> = {
+  shire: 5,
+  "old-forest": 1,
+  rivendell: 1,
+  "mines-mountains": 1,
+  "dark-land": 1,
+  "the-eye": 1,
+};
+
+const CHAPTER_PANEL_TOTAL = CHAPTER_ORDER.reduce(
+  (sum, id) => sum + CHAPTER_PANEL_COUNTS[id],
+  0
+);
+
+export const TOTAL_PANELS = CHAPTER_PANEL_TOTAL + 1;
+
+// Each chapter's start position within chapter-progress space (0-1, i.e.
+// excluding the hero panel) — proportional to how many panels precede it.
+export const CHAPTER_START_FRACTIONS: Record<ChapterId, number> = (() => {
+  let cursor = 0;
+  const map = {} as Record<ChapterId, number>;
+  for (const id of CHAPTER_ORDER) {
+    map[id] = cursor / CHAPTER_PANEL_TOTAL;
+    cursor += CHAPTER_PANEL_COUNTS[id];
+  }
+  return map;
+})();
 
 interface ProgressContextValue {
   furthestUnlocked: ChapterId;

@@ -12,8 +12,6 @@ interface ChapterShellProps {
   emberColor?: string;
   eyebrow: string;
   title: string;
-  /** Replaces the default eyebrow/title header block entirely (e.g. Shire's animated door intro). */
-  header?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -23,7 +21,6 @@ export function ChapterShell({
   emberColor,
   eyebrow,
   title,
-  header,
   children,
 }: ChapterShellProps) {
   const ref = useSectionInView(id);
@@ -60,21 +57,18 @@ export function ChapterShell({
           scroll-to-progress interaction. Each chapter's content is sized to
           fit one screen instead. */}
       <div className="relative z-10 w-full max-w-5xl px-6 py-14 sm:px-12">
-
-        {header ?? (
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
-            className="mb-10 text-center"
-          >
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
-              {eyebrow}
-            </p>
-            <h2 className="text-3xl font-bold text-white sm:text-5xl">{title}</h2>
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7 }}
+          className="mb-10 text-center"
+        >
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
+            {eyebrow}
+          </p>
+          <h2 className="text-3xl font-bold text-white sm:text-5xl">{title}</h2>
+        </motion.div>
         {children}
       </div>
     </section>
