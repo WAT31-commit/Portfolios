@@ -16,10 +16,11 @@ export function TowerMarkers({
 }) {
   return (
     <>
-      {levels.map((level) => (
+      {levels.map((level, i) => (
         <YearMarker
           key={level.id}
           level={level}
+          index={i + 1}
           progress={progress}
           active={selectedLevelId === level.id}
           onSelect={() => onSelectLevel(level.id)}

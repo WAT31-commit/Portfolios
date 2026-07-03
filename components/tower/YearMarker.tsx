@@ -16,13 +16,14 @@ import { useRef, useState } from "react";
 
 interface YearMarkerProps {
   level: LevelMeta;
+  index: number;
   progress: MotionValue<number>;
   active: boolean;
   onSelect: () => void;
 }
 
-/** A floating glass year badge beside the tower, revealed once that level's floors begin rising. */
-export function YearMarker({ level, progress, active, onSelect }: YearMarkerProps) {
+/** A floating glass badge beside the tower — a plain number and its year — revealed once that level's floors begin rising. */
+export function YearMarker({ level, index, progress, active, onSelect }: YearMarkerProps) {
   const [visible, setVisible] = useState(false);
   const wasVisible = useRef(false);
   const layout = LEVEL_LAYOUT.find((l) => l.id === level.id)!;
@@ -47,7 +48,8 @@ export function YearMarker({ level, progress, active, onSelect }: YearMarkerProp
         <button
           type="button"
           onClick={onSelect}
-          className={`flex flex-col items-center rounded-full border px-4 py-2 text-center backdrop-blur-md transition-all duration-500 ${
+          aria-label={`${level.name}, ${level.year}`}
+          className={`flex h-16 w-16 flex-col items-center justify-center rounded-full border text-center backdrop-blur-md transition-all duration-500 ${
             visible ? "opacity-100" : "translate-y-2 opacity-0"
           } ${
             active
@@ -56,10 +58,10 @@ export function YearMarker({ level, progress, active, onSelect }: YearMarkerProp
           }`}
           style={{ boxShadow: active ? `0 0 30px -6px ${level.accent}aa` : "0 4px 20px -8px rgba(0,0,0,0.5)" }}
         >
-          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
-            {level.name}
+          <span className="text-xl font-bold leading-none text-white">{index}</span>
+          <span className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-white/70">
+            {level.year}
           </span>
-          <span className="text-lg font-bold text-white">{level.year}</span>
         </button>
       </Html>
     </group>
