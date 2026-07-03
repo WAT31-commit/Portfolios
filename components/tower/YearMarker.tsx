@@ -49,18 +49,31 @@ export function YearMarker({ level, index, progress, active, onSelect }: YearMar
           type="button"
           onClick={onSelect}
           aria-label={`${level.name}, ${level.year}`}
-          className={`flex h-16 w-16 flex-col items-center justify-center rounded-full border text-center backdrop-blur-md transition-all duration-500 ${
+          className={`group flex h-[68px] w-[68px] items-center justify-center rounded-full p-[3px] transition-all duration-500 ${
             visible ? "opacity-100" : "translate-y-2 opacity-0"
-          } ${
-            active
-              ? "scale-110 border-white/50 bg-white/25"
-              : "border-white/25 bg-white/10 hover:border-white/40 hover:bg-white/15"
-          }`}
-          style={{ boxShadow: active ? `0 0 30px -6px ${level.accent}aa` : "0 4px 20px -8px rgba(0,0,0,0.5)" }}
+          } ${active ? "scale-110" : "hover:scale-105"}`}
+          style={{
+            // Outer gold ring
+            background: "linear-gradient(145deg, #e8d29a, #b9974a)",
+            boxShadow: active
+              ? "0 0 28px -4px rgba(203,168,90,0.75), inset 0 1px 0 rgba(255,255,255,0.6)"
+              : "0 6px 20px -8px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.5)",
+          }}
         >
-          <span className="text-xl font-bold leading-none text-white">{index}</span>
-          <span className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-white/70">
-            {level.year}
+          {/* Inner white marble circle — a circle inside a circle */}
+          <span
+            className="flex h-full w-full flex-col items-center justify-center rounded-full text-center"
+            style={{
+              background: active
+                ? "radial-gradient(circle at 50% 35%, #ffffff, #efe9dc)"
+                : "radial-gradient(circle at 50% 35%, #f8f5ee, #e5ddca)",
+              boxShadow: "inset 0 0 6px rgba(150,120,60,0.25)",
+            }}
+          >
+            <span className="text-lg font-bold leading-none text-[#8a6d2a]">{index}</span>
+            <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#a3873f]">
+              {level.year}
+            </span>
           </span>
         </button>
       </Html>

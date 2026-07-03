@@ -1,15 +1,20 @@
 import { TOTAL_FLOORS } from "@/data/journey";
 
-export const TOWER_RADIUS = 1.55;
+export const TOWER_RADIUS = 1.1;
 export const FLOOR_HEIGHT = 0.5;
 export const BASE_HEIGHT = 0.35;
-export const COLUMN_COUNT = 16;
-export const COLUMN_RADIUS = 0.05;
+export const COLUMN_COUNT = 14;
+export const COLUMN_RADIUS = 0.045;
 
-export const MARBLE = "#f2ece0";
-export const MARBLE_VEIN = "#e2d8c4";
-export const MARBLE_SHADOW = "#d9cdb2";
-export const TRIM = "#c9a95f";
+// A restrained white-marble-and-gold palette, in the spirit of a
+// Greco-Roman colonnade. Floors alternate between white and gold; a
+// polished gold cornice separates every tier.
+export const MARBLE = "#f6f3ec"; // white Carrara marble
+export const MARBLE_VEIN = "#ece6d6"; // faint warm veining
+export const MARBLE_SHADOW = "#e3dbc7"; // shaded stone
+export const GOLD = "#e3c983"; // pale gilded stone
+export const GOLD_DEEP = "#c6a24f"; // deeper gild for interchange
+export const TRIM = "#d4b45f"; // polished gold cornice
 
 // Where each level's floating year marker sits, and where the camera moves
 // to when that marker is clicked — a fixed angle keeps every marker (and

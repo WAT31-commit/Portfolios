@@ -7,9 +7,10 @@ import {
   COLUMN_COUNT,
   COLUMN_RADIUS,
   FLOOR_HEIGHT,
+  GOLD,
+  GOLD_DEEP,
   MARBLE,
   MARBLE_SHADOW,
-  MARBLE_VEIN,
   TOWER_RADIUS,
   TRIM,
 } from "@/lib/towerGeometry";
@@ -19,7 +20,7 @@ import { useRef } from "react";
 import * as THREE from "three";
 
 function radiusForFloor(floorIndex: number) {
-  return TOWER_RADIUS - floorIndex * 0.01;
+  return TOWER_RADIUS - floorIndex * 0.008;
 }
 
 interface FloorProps {
@@ -34,7 +35,10 @@ function Floor({ floorIndex, progress }: FloorProps) {
   const end = floorEndFraction(floorIndex);
   const radius = radiusForFloor(floorIndex);
   const y = BASE_HEIGHT + floorIndex * FLOOR_HEIGHT;
-  const drumColor = floorIndex % 2 === 0 ? MARBLE_SHADOW : MARBLE_VEIN;
+  // Interchange white marble and gilded stone floor by floor.
+  const goldFloor = floorIndex % 2 === 1;
+  const drumColor = goldFloor ? GOLD : MARBLE;
+  const columnColor = goldFloor ? MARBLE : GOLD;
 
   useFrame(() => {
     if (!group.current) return;
@@ -49,25 +53,30 @@ function Floor({ floorIndex, progress }: FloorProps) {
     return {
       x: Math.cos(angle) * (radius + COLUMN_RADIUS * 0.7),
       z: Math.sin(angle) * (radius + COLUMN_RADIUS * 0.7),
-      shade: i % 2 === 0 ? MARBLE : MARBLE_VEIN,
     };
   });
 
   return (
     <group ref={group} position={[0, y, 0]}>
+      {/* Gold plinth ring that separates this floor from the one below */}
+      <mesh position={[0, 0.03, 0]}>
+        <cylinderGeometry args={[radius + 0.12, radius + 0.16, 0.08, 44]} />
+        <meshStandardMaterial color={GOLD_DEEP} roughness={0.3} metalness={0.35} />
+      </mesh>
       <mesh position={[0, FLOOR_HEIGHT / 2, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[radius, radius, FLOOR_HEIGHT, 40]} />
-        <meshPhysicalMaterial color={drumColor} roughness={0.42} clearcoat={0.35} clearcoatRoughness={0.3} />
+        <cylinderGeometry args={[radius, radius, FLOOR_HEIGHT, 44]} />
+        <meshPhysicalMaterial color={drumColor} roughness={0.35} clearcoat={0.28} clearcoatRoughness={0.4} />
       </mesh>
       {columns.map((c, i) => (
         <mesh key={i} position={[c.x, FLOOR_HEIGHT / 2, c.z]} castShadow>
           <cylinderGeometry args={[COLUMN_RADIUS, COLUMN_RADIUS * 1.15, FLOOR_HEIGHT * 0.86, 10]} />
-          <meshPhysicalMaterial color={c.shade} roughness={0.3} clearcoat={0.4} clearcoatRoughness={0.25} />
+          <meshPhysicalMaterial color={columnColor} roughness={0.32} clearcoat={0.3} clearcoatRoughness={0.35} />
         </mesh>
       ))}
-      <mesh position={[0, FLOOR_HEIGHT - 0.03, 0]}>
-        <cylinderGeometry args={[radius + 0.14, radius + 0.09, 0.07, 40]} />
-        <meshStandardMaterial color={TRIM} roughness={0.35} metalness={0.2} />
+      {/* Gold cornice capping the floor */}
+      <mesh position={[0, FLOOR_HEIGHT - 0.02, 0]}>
+        <cylinderGeometry args={[radius + 0.16, radius + 0.1, 0.09, 44]} />
+        <meshStandardMaterial color={TRIM} roughness={0.28} metalness={0.4} />
       </mesh>
     </group>
   );

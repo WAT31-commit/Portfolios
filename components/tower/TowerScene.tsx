@@ -25,17 +25,18 @@ export function TowerScene({
   return (
     <div className="fixed inset-0 z-0">
       <Canvas shadows camera={{ fov: 45, near: 0.1, far: 100 }} dpr={[1, 1.6]}>
-        <color attach="background" args={["#10121a"]} />
-        <fog attach="fog" args={["#14151f", 11, 36]} />
-        <ambientLight intensity={0.45} color="#c9d4ff" />
+        <color attach="background" args={["#161a26"]} />
+        <fog attach="fog" args={["#1b2030", 12, 40]} />
+        <ambientLight intensity={0.75} color="#eef2ff" />
+        <hemisphereLight args={["#eaf0ff", "#3a3324", 0.7]} />
         <directionalLight
           position={[6, 9, 3]}
-          intensity={1.6}
-          color="#ffdfb0"
+          intensity={1.7}
+          color="#fff2df"
           castShadow
           shadow-mapSize={[1024, 1024]}
         />
-        <directionalLight position={[-7, 4, -5]} intensity={0.3} color="#6f8fd9" />
+        <directionalLight position={[-7, 4, -5]} intensity={0.45} color="#9fb4e6" />
 
         <Ground />
         <Tower progress={progress} />
