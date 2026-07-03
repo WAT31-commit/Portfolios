@@ -1,90 +1,87 @@
 "use client";
 
-import { levels, TOTAL_FLOORS } from "@/data/journey";
-import { shade } from "@/lib/color";
-import { LEVEL_LAYOUT, floorEndFraction, floorStartFraction } from "@/lib/towerLayout";
+import { TOTAL_FLOORS } from "@/data/journey";
+import { floorEndFraction, floorStartFraction } from "@/lib/towerLayout";
 import {
   BASE_HEIGHT,
-  BRICKS_PER_FLOOR,
-  BRICK_HEIGHT,
+  COLUMN_COUNT,
+  COLUMN_RADIUS,
   FLOOR_HEIGHT,
+  MARBLE,
+  MARBLE_SHADOW,
   TOWER_RADIUS,
+  TRIM,
 } from "@/lib/towerGeometry";
 import { useFrame } from "@react-three/fiber";
 import { MotionValue } from "framer-motion";
 import { useRef } from "react";
 import * as THREE from "three";
 
-function accentForFloor(floorIndex: number): string {
-  const layout = LEVEL_LAYOUT.find((l) => floorIndex >= l.floorStart && floorIndex < l.floorEnd);
-  const meta = levels.find((l) => l.id === layout?.id);
-  return meta?.accent ?? "#c9a876";
+function radiusForFloor(floorIndex: number) {
+  return TOWER_RADIUS - floorIndex * 0.012;
 }
 
-interface BrickProps {
+interface FloorProps {
   floorIndex: number;
-  brickIndex: number;
   progress: MotionValue<number>;
 }
 
-function Brick({ floorIndex, brickIndex, progress }: BrickProps) {
-  const ref = useRef<THREE.Mesh>(null);
-  const angle = (brickIndex / BRICKS_PER_FLOOR) * Math.PI * 2;
-  const x = Math.cos(angle) * TOWER_RADIUS;
-  const z = Math.sin(angle) * TOWER_RADIUS;
-  const y = BASE_HEIGHT + floorIndex * FLOOR_HEIGHT + FLOOR_HEIGHT / 2;
-  const width = ((2 * Math.PI * TOWER_RADIUS) / BRICKS_PER_FLOOR) * 0.99;
-
+/** One marble tier: a solid drum, a ring of columns standing proud of it, and a gilded cornice band. */
+function Floor({ floorIndex, progress }: FloorProps) {
+  const group = useRef<THREE.Group>(null);
   const start = floorStartFraction(floorIndex);
   const end = floorEndFraction(floorIndex);
-  const color = brickIndex % 2 === 0 ? accentForFloor(floorIndex) : shade(accentForFloor(floorIndex), -14);
+  const radius = radiusForFloor(floorIndex);
+  const y = BASE_HEIGHT + floorIndex * FLOOR_HEIGHT;
 
   useFrame(() => {
-    if (!ref.current) return;
-    const floorReveal = THREE.MathUtils.clamp((progress.get() - start) / (end - start || 1), 0, 1);
-    const brickReveal = THREE.MathUtils.clamp(floorReveal * BRICKS_PER_FLOOR - brickIndex, 0, 1);
-    const eased = brickReveal * brickReveal * (3 - 2 * brickReveal);
-    ref.current.scale.setScalar(Math.max(eased, 0.0001));
-    ref.current.position.y = y - (1 - eased) * 0.35;
-  });
-
-  return (
-    <mesh ref={ref} position={[x, y, z]} rotation={[0, -angle, 0]} castShadow receiveShadow>
-      <boxGeometry args={[width, BRICK_HEIGHT, 0.4]} />
-      <meshStandardMaterial color={color} roughness={0.85} />
-    </mesh>
-  );
-}
-
-function TowerCore({ progress }: { progress: MotionValue<number> }) {
-  const ref = useRef<THREE.Mesh>(null);
-  const start = floorStartFraction(0);
-  const end = floorEndFraction(TOTAL_FLOORS - 1);
-
-  useFrame(() => {
-    if (!ref.current) return;
+    if (!group.current) return;
     const reveal = THREE.MathUtils.clamp((progress.get() - start) / (end - start || 1), 0, 1);
-    const height = TOTAL_FLOORS * FLOOR_HEIGHT * reveal;
-    ref.current.scale.y = Math.max(height, 0.001);
-    ref.current.position.y = BASE_HEIGHT + height / 2;
+    const eased = reveal * reveal * (3 - 2 * reveal);
+    group.current.scale.setScalar(Math.max(eased, 0.0001));
+    group.current.position.y = y - (1 - eased) * 0.4;
   });
 
-  // A solid inner wall behind the brick ring, so gaps between bricks never
-  // reveal open sky straight through the hollow tower.
+  const columns = Array.from({ length: COLUMN_COUNT }, (_, i) => {
+    const angle = (i / COLUMN_COUNT) * Math.PI * 2;
+    return {
+      x: Math.cos(angle) * (radius + COLUMN_RADIUS * 0.7),
+      z: Math.sin(angle) * (radius + COLUMN_RADIUS * 0.7),
+    };
+  });
+
   return (
-    <mesh ref={ref} receiveShadow>
-      <cylinderGeometry args={[TOWER_RADIUS - 0.22, TOWER_RADIUS - 0.22, 1, 24]} />
-      <meshStandardMaterial color="#6b5d48" roughness={0.95} />
-    </mesh>
+    <group ref={group} position={[0, y, 0]}>
+      <mesh position={[0, FLOOR_HEIGHT / 2, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[radius, radius, FLOOR_HEIGHT, 36]} />
+        <meshStandardMaterial color={MARBLE_SHADOW} roughness={0.5} />
+      </mesh>
+      {columns.map((c, i) => (
+        <mesh key={i} position={[c.x, FLOOR_HEIGHT / 2, c.z]} castShadow>
+          <cylinderGeometry args={[COLUMN_RADIUS, COLUMN_RADIUS * 1.15, FLOOR_HEIGHT * 0.86, 10]} />
+          <meshStandardMaterial color={MARBLE} roughness={0.35} />
+        </mesh>
+      ))}
+      <mesh position={[0, FLOOR_HEIGHT - 0.03, 0]}>
+        <cylinderGeometry args={[radius + 0.15, radius + 0.1, 0.08, 36]} />
+        <meshStandardMaterial color={TRIM} roughness={0.4} metalness={0.15} />
+      </mesh>
+    </group>
   );
 }
 
 function TowerBase() {
   return (
-    <mesh position={[0, BASE_HEIGHT / 2, 0]} receiveShadow castShadow>
-      <cylinderGeometry args={[TOWER_RADIUS + 0.35, TOWER_RADIUS + 0.5, BASE_HEIGHT, 28]} />
-      <meshStandardMaterial color="#8a8478" roughness={0.95} />
-    </mesh>
+    <group>
+      <mesh position={[0, BASE_HEIGHT / 2, 0]} receiveShadow castShadow>
+        <cylinderGeometry args={[TOWER_RADIUS + 0.45, TOWER_RADIUS + 0.7, BASE_HEIGHT, 40]} />
+        <meshStandardMaterial color={MARBLE_SHADOW} roughness={0.6} />
+      </mesh>
+      <mesh position={[0, BASE_HEIGHT + 0.02, 0]}>
+        <cylinderGeometry args={[TOWER_RADIUS + 0.2, TOWER_RADIUS + 0.2, 0.06, 40]} />
+        <meshStandardMaterial color={TRIM} roughness={0.4} metalness={0.15} />
+      </mesh>
+    </group>
   );
 }
 
@@ -94,17 +91,9 @@ export function Tower({ progress }: { progress: MotionValue<number> }) {
   return (
     <group>
       <TowerBase />
-      <TowerCore progress={progress} />
-      {floors.map((floorIndex) =>
-        Array.from({ length: BRICKS_PER_FLOOR }, (_, brickIndex) => (
-          <Brick
-            key={`${floorIndex}-${brickIndex}`}
-            floorIndex={floorIndex}
-            brickIndex={brickIndex}
-            progress={progress}
-          />
-        ))
-      )}
+      {floors.map((floorIndex) => (
+        <Floor key={floorIndex} floorIndex={floorIndex} progress={progress} />
+      ))}
     </group>
   );
 }

@@ -43,8 +43,10 @@ export function Modal({
             role="dialog"
             aria-modal="true"
             aria-labelledby={labelledBy}
-            className={`relative max-h-[85vh] w-full ${maxWidthClassName} overflow-y-auto rounded-lg border border-white/10 bg-neutral-900 p-6 shadow-2xl sm:p-8`}
-            style={{ boxShadow: `0 0 60px -15px ${accent}55` }}
+            className={`relative max-h-[85vh] w-full ${maxWidthClassName} overflow-y-auto rounded-2xl border border-white/15 bg-gradient-to-br from-white/12 via-white/[0.06] to-white/[0.03] p-6 shadow-2xl backdrop-blur-2xl sm:p-8`}
+            style={{
+              boxShadow: `0 20px 70px -20px ${accent}55, inset 0 1px 0 rgba(255,255,255,0.18)`,
+            }}
             initial={{ opacity: 0, scale: 0.94, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 20 }}
@@ -54,7 +56,7 @@ export function Modal({
             <button
               onClick={onClose}
               aria-label="Close"
-              className="absolute right-4 top-4 text-2xl leading-none text-white/50 transition hover:text-white"
+              className="absolute right-4 top-4 text-2xl leading-none text-white/60 transition hover:text-white"
             >
               ×
             </button>
