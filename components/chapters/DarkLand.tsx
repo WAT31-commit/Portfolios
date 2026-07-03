@@ -2,10 +2,12 @@
 
 import { ChapterShell } from "@/components/chapters/ChapterShell";
 import { QuestModal } from "@/components/quest/QuestModal";
-import { quests } from "@/data/journey";
+import { getChapterMeta, quests } from "@/data/journey";
 import { Quest } from "@/lib/types";
 import { motion } from "framer-motion";
 import { useState } from "react";
+
+const meta = getChapterMeta("dark-land");
 
 export function DarkLand() {
   const [activeQuest, setActiveQuest] = useState<Quest | null>(null);
@@ -14,10 +16,10 @@ export function DarkLand() {
   return (
     <ChapterShell
       id="dark-land"
-      eyebrow="2026 · The Dark Land"
-      title="The Final Trials"
-      gradient="bg-gradient-to-b from-[#2a0e0a] via-[#3a1409] to-[#160604]"
-      emberColor="#ff8c42"
+      eyebrow={`${meta.year} · ${meta.name}`}
+      title={meta.title}
+      gradient={meta.gradient}
+      emberColor={meta.emberColor}
     >
       <p className="mx-auto mb-14 max-w-xl text-center text-white/70">
         The stakes get real here. Each card below is a boss battle — a project where failure

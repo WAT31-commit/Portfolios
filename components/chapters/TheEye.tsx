@@ -1,8 +1,10 @@
 "use client";
 
 import { useSectionInView } from "@/lib/useSectionInView";
-import { bio, vision } from "@/data/journey";
+import { bio, getChapterMeta, vision } from "@/data/journey";
 import { motion } from "framer-motion";
+
+const meta = getChapterMeta("the-eye");
 
 export function TheEye() {
   const ref = useSectionInView("the-eye");
@@ -11,7 +13,7 @@ export function TheEye() {
     <section
       id="the-eye"
       ref={ref as React.RefObject<HTMLElement>}
-      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#120a06] via-[#1a0d05] to-[#0a0503] px-6 py-24 text-center"
+      className={`relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-6 py-24 text-center ${meta.gradient}`}
     >
       <svg
         width="180"
@@ -60,7 +62,7 @@ export function TheEye() {
         transition={{ duration: 0.8 }}
         className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-orange-400"
       >
-        Future · The Eye
+        {meta.year} · {meta.name}
       </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 12 }}
@@ -69,7 +71,7 @@ export function TheEye() {
         transition={{ duration: 0.8, delay: 0.1 }}
         className="mb-10 text-3xl font-bold text-white sm:text-5xl"
       >
-        What Comes Next
+        {meta.title}
       </motion.h2>
 
       <div className="mx-auto grid max-w-2xl gap-6 text-left sm:grid-cols-2">
@@ -105,7 +107,7 @@ export function TheEye() {
           className="rounded-xl border border-orange-500/20 bg-black/30 p-6 backdrop-blur-sm sm:col-span-2"
         >
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-widest text-orange-300">
-            Where I'm Headed
+            Where I&rsquo;m Headed
           </h3>
           <ul className="list-disc space-y-1 pl-4 text-white/80">
             {vision.goals.map((g) => (

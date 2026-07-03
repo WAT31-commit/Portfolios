@@ -4,6 +4,7 @@ import { Embers } from "@/components/three/Embers";
 import { useSectionInView } from "@/lib/useSectionInView";
 import { ChapterId } from "@/lib/types";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface ChapterShellProps {
   id: ChapterId;
@@ -24,13 +25,30 @@ export function ChapterShell({
 }: ChapterShellProps) {
   const ref = useSectionInView(id);
 
+  // Only mount the WebGL ember canvas once this chapter is near the
+  // viewport, and unmount it again once scrolled far away — with six
+  // chapters each running their own Canvas/rAF loop, keeping all of them
+  // alive at once wastes GPU work on sections nobody is looking at.
+  const [emberNearby, setEmberNearby] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || !emberColor) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setEmberNearby(entry.isIntersecting),
+      { rootMargin: "50% 0px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `ref` is a stable ref object
+  }, [emberColor]);
+
   return (
     <section
       id={id}
       ref={ref as React.RefObject<HTMLElement>}
       className={`relative min-h-screen w-full overflow-hidden px-6 py-24 sm:px-12 ${gradient}`}
     >
-      {emberColor && <Embers color={emberColor} />}
+      {emberColor && emberNearby && <Embers color={emberColor} />}
       <div className="relative z-10 mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}

@@ -1,8 +1,10 @@
 "use client";
 
 import { ChapterShell } from "@/components/chapters/ChapterShell";
-import { bio } from "@/data/journey";
+import { bio, getChapterMeta } from "@/data/journey";
 import { motion } from "framer-motion";
+
+const meta = getChapterMeta("shire");
 
 function Card({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -22,10 +24,10 @@ export function Shire() {
   return (
     <ChapterShell
       id="shire"
-      eyebrow="2022 · The Shire"
-      title="Where the Journey Begins"
-      gradient="bg-gradient-to-b from-[#1a2e1c] via-[#22381f] to-[#16240f]"
-      emberColor="#e8d38a"
+      eyebrow={`${meta.year} · ${meta.name}`}
+      title={meta.title}
+      gradient={meta.gradient}
+      emberColor={meta.emberColor}
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <Card>

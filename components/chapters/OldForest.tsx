@@ -2,22 +2,24 @@
 
 import { ChapterShell } from "@/components/chapters/ChapterShell";
 import { SkillModal } from "@/components/skill/SkillModal";
-import { activities, quests, skills } from "@/data/journey";
+import { activities, getChapterMeta, quests, skills } from "@/data/journey";
 import { Skill } from "@/lib/types";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+const meta = getChapterMeta("old-forest");
+
 export function OldForest() {
   const [activeSkill, setActiveSkill] = useState<Skill | null>(null);
-  const forestQuests = quests.filter((q) => q.year === 2023);
+  const forestQuests = quests.filter((q) => q.chapter === "old-forest");
 
   return (
     <ChapterShell
       id="old-forest"
-      eyebrow="2023 · The Old Forest"
-      title="Finding the Path"
-      gradient="bg-gradient-to-b from-[#0f2016] via-[#132a1a] to-[#0a1a10]"
-      emberColor="#8bd17c"
+      eyebrow={`${meta.year} · ${meta.name}`}
+      title={meta.title}
+      gradient={meta.gradient}
+      emberColor={meta.emberColor}
     >
       <div className="mb-16">
         <h3 className="mb-6 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">

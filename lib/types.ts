@@ -58,4 +58,7 @@ export interface ChapterMeta {
   name: string;
   title: string;
   blurb: string;
+  icon: string;
+  gradient: string;
+  emberColor: string;
 }

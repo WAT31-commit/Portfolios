@@ -1,4 +1,4 @@
-import { ActivityItem, ChapterMeta, Quest, Skill } from "@/lib/types";
+import { ActivityItem, ChapterId, ChapterMeta, Quest, Skill } from "@/lib/types";
 
 export const chapters: ChapterMeta[] = [
   {
@@ -8,6 +8,9 @@ export const chapters: ChapterMeta[] = [
     title: "Where the Journey Begins",
     blurb:
       "A quiet beginning — home, curiosity, and the first steps out the door.",
+    icon: "🏡",
+    gradient: "bg-gradient-to-b from-[#1a2e1c] via-[#22381f] to-[#16240f]",
+    emberColor: "#e8d38a",
   },
   {
     id: "old-forest",
@@ -15,6 +18,9 @@ export const chapters: ChapterMeta[] = [
     name: "The Old Forest",
     title: "Finding the Path",
     blurb: "Tangled, formative years spent building skills in the undergrowth.",
+    icon: "🌲",
+    gradient: "bg-gradient-to-b from-[#0f2016] via-[#132a1a] to-[#0a1a10]",
+    emberColor: "#8bd17c",
   },
   {
     id: "rivendell",
@@ -22,6 +28,9 @@ export const chapters: ChapterMeta[] = [
     name: "Rivendell",
     title: "Councils and Craft",
     blurb: "A haven for focused work — the projects that sharpened the blade.",
+    icon: "📚",
+    gradient: "bg-gradient-to-b from-[#141c2e] via-[#1a2438] to-[#0d1220]",
+    emberColor: "#a8c8f0",
   },
   {
     id: "mines-mountains",
@@ -29,6 +38,9 @@ export const chapters: ChapterMeta[] = [
     name: "The Mines & Mountains",
     title: "Into the Depths",
     blurb: "Harder climbs, bigger stakes, and the peaks worth summiting.",
+    icon: "⛰️",
+    gradient: "bg-gradient-to-b from-[#1e2530] via-[#252d3a] to-[#12161e]",
+    emberColor: "#c9d6e8",
   },
   {
     id: "dark-land",
@@ -36,6 +48,9 @@ export const chapters: ChapterMeta[] = [
     name: "The Dark Land",
     title: "The Final Trials",
     blurb: "High-pressure battles against the biggest problems yet.",
+    icon: "🌋",
+    gradient: "bg-gradient-to-b from-[#2a0e0a] via-[#3a1409] to-[#160604]",
+    emberColor: "#ff8c42",
   },
   {
     id: "the-eye",
@@ -43,8 +58,17 @@ export const chapters: ChapterMeta[] = [
     name: "The Eye",
     title: "What Comes Next",
     blurb: "Not a threat on the horizon, but a vision — watching, ready, awake.",
+    icon: "👁️",
+    gradient: "bg-gradient-to-b from-[#120a06] via-[#1a0d05] to-[#0a0503]",
+    emberColor: "#ff8c42",
   },
 ];
+
+export function getChapterMeta(id: ChapterId): ChapterMeta {
+  const meta = chapters.find((c) => c.id === id);
+  if (!meta) throw new Error(`Unknown chapter id: ${id}`);
+  return meta;
+}
 
 export const bio = {
   name: "William",
@@ -180,8 +204,6 @@ export const quests: Quest[] = [
       "Adopted by the club and still in use a year later",
     ],
     tools: ["Next.js", "SQLite", "Tailwind CSS"],
-    link: "",
-    repo: "",
   },
   {
     id: "market-entry-case",

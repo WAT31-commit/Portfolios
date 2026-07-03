@@ -2,10 +2,12 @@
 
 import { ChapterShell } from "@/components/chapters/ChapterShell";
 import { QuestModal } from "@/components/quest/QuestModal";
-import { quests } from "@/data/journey";
+import { getChapterMeta, quests } from "@/data/journey";
 import { Quest } from "@/lib/types";
 import { motion } from "framer-motion";
 import { useState } from "react";
+
+const meta = getChapterMeta("mines-mountains");
 
 export function MinesMountains() {
   const [activeQuest, setActiveQuest] = useState<Quest | null>(null);
@@ -14,10 +16,10 @@ export function MinesMountains() {
   return (
     <ChapterShell
       id="mines-mountains"
-      eyebrow="2025 · The Mines & Mountains"
-      title="Into the Depths"
-      gradient="bg-gradient-to-b from-[#1e2530] via-[#252d3a] to-[#12161e]"
-      emberColor="#c9d6e8"
+      eyebrow={`${meta.year} · ${meta.name}`}
+      title={meta.title}
+      gradient={meta.gradient}
+      emberColor={meta.emberColor}
     >
       <p className="mx-auto mb-14 max-w-xl text-center text-white/70">
         Steeper terrain, heavier packs. Each peak below marks a project that demanded more than

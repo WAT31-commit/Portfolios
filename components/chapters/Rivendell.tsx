@@ -2,12 +2,13 @@
 
 import { ChapterShell } from "@/components/chapters/ChapterShell";
 import { QuestModal } from "@/components/quest/QuestModal";
-import { quests } from "@/data/journey";
+import { getChapterMeta, quests } from "@/data/journey";
 import { Quest } from "@/lib/types";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
 const SPINE_COLORS = ["#7c9cd1", "#b98fd1", "#d1a86f", "#6fbf9e", "#c97b7b"];
+const meta = getChapterMeta("rivendell");
 
 export function Rivendell() {
   const [activeQuest, setActiveQuest] = useState<Quest | null>(null);
@@ -16,10 +17,10 @@ export function Rivendell() {
   return (
     <ChapterShell
       id="rivendell"
-      eyebrow="2024 · Rivendell"
-      title="Councils and Craft"
-      gradient="bg-gradient-to-b from-[#141c2e] via-[#1a2438] to-[#0d1220]"
-      emberColor="#a8c8f0"
+      eyebrow={`${meta.year} · ${meta.name}`}
+      title={meta.title}
+      gradient={meta.gradient}
+      emberColor={meta.emberColor}
     >
       <p className="mx-auto mb-12 max-w-xl text-center text-white/70">
         In the library of the Last Homely House, every project earned a spine of its own.

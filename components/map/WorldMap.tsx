@@ -1,29 +1,13 @@
 "use client";
 
 import { CHAPTER_ORDER, useProgress } from "@/lib/progress-context";
+import { useScrollToChapter } from "@/lib/useScrollToChapter";
 import { chapters } from "@/data/journey";
 import { motion } from "framer-motion";
-import { useLenis } from "lenis/react";
-
-const ICONS: Record<string, string> = {
-  shire: "🏡",
-  "old-forest": "🌲",
-  rivendell: "📚",
-  "mines-mountains": "⛰️",
-  "dark-land": "🌋",
-  "the-eye": "👁️",
-};
 
 export function WorldMap() {
   const { activeChapter, isUnlocked } = useProgress();
-  const lenis = useLenis();
-
-  function scrollToChapter(id: string) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (lenis) lenis.scrollTo(el);
-    else el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  const scrollToChapter = useScrollToChapter();
 
   return (
     <nav
@@ -53,7 +37,7 @@ export function WorldMap() {
                   animate={active ? { scale: 1.25 } : { scale: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
-                  {unlocked ? ICONS[id] : "❔"}
+                  {unlocked ? meta.icon : "❔"}
                 </motion.span>
                 {active && (
                   <motion.span
