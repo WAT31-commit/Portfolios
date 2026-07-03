@@ -1,25 +1,24 @@
-import { DarkLand } from "@/components/chapters/DarkLand";
-import { MinesMountains } from "@/components/chapters/MinesMountains";
-import { OldForest } from "@/components/chapters/OldForest";
-import { Rivendell } from "@/components/chapters/Rivendell";
-import { Shire } from "@/components/chapters/Shire";
-import { TheEye } from "@/components/chapters/TheEye";
-import { HeroMap } from "@/components/map/HeroMap";
-import { WorldMap } from "@/components/map/WorldMap";
+"use client";
+
+import { EyeSection } from "@/components/sections/EyeSection";
+import { IntroSection } from "@/components/sections/IntroSection";
+import { LevelSections } from "@/components/sections/LevelSections";
+import { OutroSection } from "@/components/sections/OutroSection";
+import { TowerScene } from "@/components/tower/TowerScene";
+import { useScrollProgress } from "@/lib/useScrollProgress";
 
 export default function Home() {
+  const progress = useScrollProgress();
+
   return (
     <>
-      <main className="relative flex h-screen w-max">
-        <HeroMap />
-        <Shire />
-        <OldForest />
-        <Rivendell />
-        <MinesMountains />
-        <DarkLand />
-        <TheEye />
+      <TowerScene progress={progress} />
+      <main className="relative z-10">
+        <IntroSection />
+        <LevelSections />
+        <EyeSection />
+        <OutroSection />
       </main>
-      <WorldMap />
     </>
   );
 }

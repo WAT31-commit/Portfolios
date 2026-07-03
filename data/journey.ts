@@ -1,83 +1,69 @@
-import { ActivityItem, ChapterId, ChapterMeta, Quest, Skill } from "@/lib/types";
+import { ActivityItem, LevelId, LevelMeta, Quest, Skill } from "@/lib/types";
 
-export const chapters: ChapterMeta[] = [
+export const levels: LevelMeta[] = [
   {
-    id: "shire",
+    id: "foundation",
     year: "2022",
-    name: "The Shire",
-    title: "Where the Journey Begins",
-    blurb:
-      "A quiet beginning — home, curiosity, and the first steps out the door.",
-    icon: "🏡",
-    gradient: "bg-gradient-to-b from-[#1a2e1c] via-[#22381f] to-[#16240f]",
-    emberColor: "#e8d38a",
+    name: "The Foundation",
+    title: "Where the Tower Begins",
+    blurb: "A first floor laid on open ground — curiosity, a starting toolkit, and a reason to build.",
+    floors: 1,
+    accent: "#c9a876",
   },
   {
-    id: "old-forest",
+    id: "groundwork",
     year: "2023",
-    name: "The Old Forest",
-    title: "Finding the Path",
-    blurb: "Tangled, formative years spent building skills in the undergrowth.",
-    icon: "🌲",
-    gradient: "bg-gradient-to-b from-[#0f2016] via-[#132a1a] to-[#0a1a10]",
-    emberColor: "#8bd17c",
+    name: "Groundwork",
+    title: "Learning to Lay Bricks",
+    blurb: "The unglamorous years — building the skills that everything above would eventually stand on.",
+    floors: 2,
+    accent: "#8bd17c",
   },
   {
-    id: "rivendell",
+    id: "craft",
     year: "2024",
-    name: "Rivendell",
-    title: "Councils and Craft",
-    blurb: "A haven for focused work — the projects that sharpened the blade.",
-    icon: "📚",
-    gradient: "bg-gradient-to-b from-[#141c2e] via-[#1a2438] to-[#0d1220]",
-    emberColor: "#a8c8f0",
+    name: "The Craft Floors",
+    title: "Sharpening the Work",
+    blurb: "Real projects, real stakes — the floors where the work started looking like a career.",
+    floors: 2,
+    accent: "#a8c8f0",
   },
   {
-    id: "mines-mountains",
+    id: "ascent",
     year: "2025",
-    name: "The Mines & Mountains",
-    title: "Into the Depths",
-    blurb: "Harder climbs, bigger stakes, and the peaks worth summiting.",
-    icon: "⛰️",
-    gradient: "bg-gradient-to-b from-[#1e2530] via-[#252d3a] to-[#12161e]",
-    emberColor: "#c9d6e8",
+    name: "The Ascent",
+    title: "Steeper Climbs",
+    blurb: "Harder problems, bigger scope, and the first floors built under real pressure.",
+    floors: 2,
+    accent: "#c9d6e8",
   },
   {
-    id: "dark-land",
+    id: "trial",
     year: "2026",
-    name: "The Dark Land",
-    title: "The Final Trials",
-    blurb: "High-pressure battles against the biggest problems yet.",
-    icon: "🌋",
-    gradient: "bg-gradient-to-b from-[#2a0e0a] via-[#3a1409] to-[#160604]",
-    emberColor: "#ff8c42",
-  },
-  {
-    id: "the-eye",
-    year: "Future",
-    name: "The Eye",
-    title: "What Comes Next",
-    blurb: "Not a threat on the horizon, but a vision — watching, ready, awake.",
-    icon: "👁️",
-    gradient: "bg-gradient-to-b from-[#120a06] via-[#1a0d05] to-[#0a0503]",
-    emberColor: "#ff8c42",
+    name: "Trial by Fire",
+    title: "The Top of the Tower",
+    blurb: "The highest-stakes work yet — three floors, because this one earned them.",
+    floors: 3,
+    accent: "#ff8c42",
   },
 ];
 
-export function getChapterMeta(id: ChapterId): ChapterMeta {
-  const meta = chapters.find((c) => c.id === id);
-  if (!meta) throw new Error(`Unknown chapter id: ${id}`);
+export function getLevelMeta(id: LevelId): LevelMeta {
+  const meta = levels.find((l) => l.id === id);
+  if (!meta) throw new Error(`Unknown level id: ${id}`);
   return meta;
 }
 
+export const TOTAL_FLOORS = levels.reduce((sum, l) => sum + l.floors, 0);
+
 export const bio = {
   name: "William",
-  tagline: "Global Business Management student, builder, and reluctant cartographer of his own journey.",
+  tagline: "Global Business Management student, builder, and the one laying these bricks.",
   home: "Bree",
   summary:
-    "I'm William — currently studying Global Business Management, with a habit of treating every class project like it's the One Ring: worth obsessing over, hard to let go of, and usually the thing everyone else warned me not to pick up. This site maps how I got from 'curious first-year' to whatever I am now, region by region.",
+    "I'm William — currently studying Global Business Management, with a habit of treating every class project like it needs its own floor plan: worth obsessing over, hard to let go of, and usually the thing everyone else warned me not to pick up. This tower is a record of how I got from 'curious first-year' to whatever I am now, floor by floor.",
   whyGBM:
-    "I chose Global Business Management because I wanted a degree that forced me to zoom out — supply chains, markets, culture, strategy — instead of specializing too early. I like understanding how the whole map connects before I decide which region to settle in.",
+    "I chose Global Business Management because I wanted a foundation that forced me to zoom out — supply chains, markets, culture, strategy — instead of specializing too early. I like understanding how the whole structure holds together before I decide which floor to build next.",
   goals: [
     "Build products and businesses that solve real, unglamorous problems",
     "Work somewhere that operates across borders, not just one market",
@@ -95,7 +81,7 @@ export const vision = {
   mission:
     "To build things — products, deals, teams — that make an unglamorous problem quietly disappear for the people who had to deal with it every day.",
   philosophy:
-    "I don't think the business side and the technical side are actually different disciplines. They're the same discipline — understanding a system well enough to change it — wearing different clothes.",
+    "I don't think the business side and the technical side are actually different disciplines. They're the same discipline — understanding a structure well enough to build on it — wearing different clothes.",
   goals: [
     "Join or start a team building something that operates across borders",
     "Keep shipping real, working things instead of just planning them",
@@ -109,6 +95,7 @@ export const skills: Skill[] = [
     name: "Financial Modeling",
     icon: "📊",
     level: 4,
+    levelId: "groundwork",
     whereLearned: "Intro to Finance, self-taught via case competitions",
     projects: ["Startup valuation case study", "Semester budget model for student org"],
     lessons:
@@ -119,16 +106,17 @@ export const skills: Skill[] = [
     name: "Market Research",
     icon: "🔍",
     level: 4,
+    levelId: "groundwork",
     whereLearned: "Global Marketing course + internship",
     projects: ["Market-entry analysis for a mid-size retailer", "Competitor teardown deck"],
-    lessons:
-      "Data is cheap; knowing which three numbers actually change the decision is the hard part.",
+    lessons: "Data is cheap; knowing which three numbers actually change the decision is the hard part.",
   },
   {
     id: "project-mgmt",
     name: "Project Management",
     icon: "🗂️",
     level: 3,
+    levelId: "craft",
     whereLearned: "Student consulting club",
     projects: ["Led a 5-person team through a semester-long client project"],
     lessons: "A plan survives contact with reality for about a week — build in the slack up front.",
@@ -138,6 +126,7 @@ export const skills: Skill[] = [
     name: "Web Development",
     icon: "💻",
     level: 3,
+    levelId: "craft",
     whereLearned: "Self-taught, YouTube + documentation + a lot of broken builds",
     projects: ["This portfolio site", "A booking tool for a campus club"],
     lessons: "Shipping something small and ugly beats planning something big and perfect.",
@@ -147,6 +136,7 @@ export const skills: Skill[] = [
     name: "Data Analysis",
     icon: "📈",
     level: 3,
+    levelId: "ascent",
     whereLearned: "Business Analytics course",
     projects: ["Customer churn analysis for a class project", "Event attendance forecasting"],
     lessons: "The chart you make first is rarely the chart that convinces anyone — iterate on the framing, not just the data.",
@@ -156,6 +146,7 @@ export const skills: Skill[] = [
     name: "Public Speaking & Pitching",
     icon: "🎤",
     level: 4,
+    levelId: "trial",
     whereLearned: "Debate in high school, case competitions in college",
     projects: ["Pitched at a university startup competition (2nd place)", "Presented client findings to a real executive panel"],
     lessons: "Confidence reads before content does — but only content survives the Q&A.",
@@ -187,12 +178,12 @@ export const activities: ActivityItem[] = [
 ];
 
 export const quests: Quest[] = [
-  // Rivendell — 2024
+  // The Craft Floors — 2024
   {
     id: "campus-booking-tool",
-    title: "The Booking Stone",
+    title: "The Booking Tool",
     year: 2024,
-    chapter: "rivendell",
+    levelId: "craft",
     tagline: "A lightweight booking tool built for a campus club drowning in spreadsheet chaos.",
     tags: ["Web Dev", "Product"],
     description:
@@ -207,9 +198,9 @@ export const quests: Quest[] = [
   },
   {
     id: "market-entry-case",
-    title: "The Beverage Frontier",
+    title: "The Beverage Case",
     year: 2024,
-    chapter: "rivendell",
+    levelId: "craft",
     tagline: "A full market-entry strategy for a beverage startup, built for a case competition.",
     tags: ["Strategy", "Research"],
     description:
@@ -222,12 +213,12 @@ export const quests: Quest[] = [
     ],
     tools: ["Excel", "Market research", "PowerPoint"],
   },
-  // Mines & Mountains — 2025
+  // The Ascent — 2025
   {
     id: "churn-dashboard",
-    title: "Peak of Falling Numbers",
+    title: "The Churn Dashboard",
     year: 2025,
-    chapter: "mines-mountains",
+    levelId: "ascent",
     tagline: "A churn-prediction dashboard for a small subscription business.",
     tags: ["Data", "Analytics"],
     mission: "Help a small subscription business understand why customers were leaving before they left.",
@@ -241,9 +232,9 @@ export const quests: Quest[] = [
   },
   {
     id: "internship-supply-chain",
-    title: "The Supply Line Summit",
+    title: "The Supply Chain Internship",
     year: 2025,
-    chapter: "mines-mountains",
+    levelId: "ascent",
     tagline: "Summer internship analyzing supplier risk for a mid-size manufacturer.",
     tags: ["Internship", "Supply Chain"],
     mission: "Identify which suppliers posed the highest risk to production continuity.",
@@ -255,12 +246,12 @@ export const quests: Quest[] = [
     impact:
       "Procurement used the framework to diversify two high-risk single-source suppliers before a regional disruption hit later that year.",
   },
-  // Dark Land — 2026
+  // Trial by Fire — 2026
   {
     id: "capstone-launch",
-    title: "The Siege of Launch Day",
+    title: "The Capstone Launch",
     year: 2026,
-    chapter: "dark-land",
+    levelId: "trial",
     tagline: "Senior capstone: taking a student-run micro-business from idea to real revenue in one semester.",
     tags: ["Capstone", "Entrepreneurship"],
     problem:

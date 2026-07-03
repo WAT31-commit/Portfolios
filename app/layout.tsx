@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
-import { ProgressProvider } from "@/lib/progress-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "There and Back Again — The Journey of William",
+  title: "The Tower — William's Portfolio",
   description:
-    "A scroll-driven fantasy portfolio charting William's journey from The Shire to The Eye.",
+    "A scroll-driven 3D tower, built floor by floor from William's experience, skills, and projects.",
 };
 
 export const viewport: Viewport = {
@@ -39,9 +38,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-black">
-        <SmoothScroll>
-          <ProgressProvider>{children}</ProgressProvider>
-        </SmoothScroll>
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );

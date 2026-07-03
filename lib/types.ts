@@ -1,16 +1,11 @@
-export type ChapterId =
-  | "shire"
-  | "old-forest"
-  | "rivendell"
-  | "mines-mountains"
-  | "dark-land"
-  | "the-eye";
+export type LevelId = "foundation" | "groundwork" | "craft" | "ascent" | "trial";
 
 export interface Skill {
   id: string;
   name: string;
   icon: string;
   level: 1 | 2 | 3 | 4 | 5;
+  levelId: LevelId;
   whereLearned: string;
   projects: string[];
   lessons: string;
@@ -28,37 +23,35 @@ export interface Quest {
   id: string;
   title: string;
   year: number;
-  chapter: ChapterId;
+  levelId: LevelId;
   tagline: string;
   tags: string[];
   link?: string;
   repo?: string;
 
-  // Rivendell (book spine -> quest log)
   description?: string;
   role?: string;
   highlights?: string[];
 
-  // Mines & Mountains (peaks)
   mission?: string;
   problem?: string;
   solution?: string;
   tools?: string[];
   impact?: string;
 
-  // Dark Land (boss battles)
   strategy?: string;
   execution?: string;
   outcome?: string;
 }
 
-export interface ChapterMeta {
-  id: ChapterId;
+export interface LevelMeta {
+  id: LevelId;
   year: string;
   name: string;
   title: string;
   blurb: string;
-  icon: string;
-  gradient: string;
-  emberColor: string;
+  /** How many floors of the tower this experience builds — 1 to 3, by significance. */
+  floors: number;
+  /** Brick/accent color for this stretch of the tower. */
+  accent: string;
 }
