@@ -16,7 +16,7 @@ export function EyeSection() {
         transition={{ duration: 1 }}
         className="max-w-md text-lg font-medium text-white/85 sm:text-2xl"
       >
-        Ten floors up, the tower opens its eye to the world.
+        Ten floors up, a tree of knowledge crowns the tower — its golden apples the ideas the climb has borne.
       </motion.p>
     </section>
   );

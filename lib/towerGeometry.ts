@@ -1,10 +1,10 @@
 import { TOTAL_FLOORS } from "@/data/journey";
 
-export const TOWER_RADIUS = 1.1;
+export const TOWER_RADIUS = 0.5;
 export const FLOOR_HEIGHT = 0.5;
 export const BASE_HEIGHT = 0.35;
-export const COLUMN_COUNT = 14;
-export const COLUMN_RADIUS = 0.045;
+export const COLUMN_COUNT = 10;
+export const COLUMN_RADIUS = 0.04;
 
 // A restrained white-marble-and-gold palette, in the spirit of a
 // Greco-Roman colonnade. Floors alternate between white and gold; a
@@ -20,8 +20,14 @@ export const TRIM = "#d4b45f"; // polished gold cornice
 // to when that marker is clicked — a fixed angle keeps every marker (and
 // the zoomed-in framing) consistent and predictable.
 export const MARKER_ANGLE = Math.PI / 7;
-export const MARKER_RADIUS_OFFSET = 0.9;
-export const FOCUS_RADIUS = 3.6;
+export const MARKER_RADIUS_OFFSET = 1.1;
+export const FOCUS_RADIUS = 3.2;
+
+// The floating year badges sit on an evenly-spaced vertical rail beside the
+// tower, so the gap between each is identical regardless of how many floors
+// its level spans.
+export const MARKER_Y_BOTTOM = 0.95;
+export const MARKER_Y_STEP = 0.98;
 
 export const TOWER_TOP_Y = BASE_HEIGHT + TOTAL_FLOORS * FLOOR_HEIGHT;
 export const EYE_Y = TOWER_TOP_Y + 1.1;
@@ -30,5 +36,4 @@ export const EYE_Y = TOWER_TOP_Y + 1.1;
 // origin: camera -> figure -> desk -> window -> (tower, far away).
 export const STUDY_FIGURE_Z = 8;
 export const STUDY_DESK_Z = 7.2;
-export const STUDY_WINDOW_Z = 4;
 export const STUDY_WALL_Z = 18;

@@ -5,11 +5,11 @@ import { Canvas } from "@react-three/fiber";
 import { MotionValue } from "framer-motion";
 import { CameraRig } from "./CameraRig";
 import { Clouds } from "./Clouds";
-import { Eye } from "./Eye";
 import { Ground } from "./Ground";
 import { StudyRoom } from "./StudyRoom";
 import { Tower } from "./Tower";
 import { TowerMarkers } from "./TowerMarkers";
+import { Tree } from "./Tree";
 
 const TOWER_CLOUD_HEIGHT = 6.5;
 
@@ -41,7 +41,7 @@ export function TowerScene({
         <Ground />
         <Tower progress={progress} />
         <TowerMarkers progress={progress} selectedLevelId={selectedLevelId} onSelectLevel={onSelectLevel} />
-        <Eye progress={progress} />
+        <Tree progress={progress} />
         <StudyRoom progress={progress} />
         <Clouds heightY={TOWER_CLOUD_HEIGHT} />
         <CameraRig progress={progress} focusedLevelId={selectedLevelId} />

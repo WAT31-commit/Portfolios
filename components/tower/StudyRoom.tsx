@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  STUDY_DESK_Z,
-  STUDY_FIGURE_Z,
-  STUDY_WALL_Z,
-  STUDY_WINDOW_Z,
-} from "@/lib/towerGeometry";
+import { STUDY_DESK_Z, STUDY_FIGURE_Z, STUDY_WALL_Z } from "@/lib/towerGeometry";
 import { EYE_END_FRACTION, OUTRO_CAMERA_DONE_FRACTION } from "@/lib/towerLayout";
 import { useFrame } from "@react-three/fiber";
 import { MotionValue } from "framer-motion";
@@ -16,36 +11,6 @@ import { SilhouetteFigure } from "./SilhouetteFigure";
 function smoothstep(edge0: number, edge1: number, x: number) {
   const t = THREE.MathUtils.clamp((x - edge0) / (edge1 - edge0 || 1), 0, 1);
   return t * t * (3 - 2 * t);
-}
-
-function WindowFrame() {
-  const w = 3.2;
-  const h = 4.2;
-  const t = 0.14;
-  return (
-    <group position={[0, 2.1, STUDY_WINDOW_Z]}>
-      <mesh position={[-w / 2, 0, 0]}>
-        <boxGeometry args={[t, h, t]} />
-        <meshStandardMaterial color="#3a2d20" roughness={0.8} />
-      </mesh>
-      <mesh position={[w / 2, 0, 0]}>
-        <boxGeometry args={[t, h, t]} />
-        <meshStandardMaterial color="#3a2d20" roughness={0.8} />
-      </mesh>
-      <mesh position={[0, h / 2, 0]}>
-        <boxGeometry args={[w + t, t, t]} />
-        <meshStandardMaterial color="#3a2d20" roughness={0.8} />
-      </mesh>
-      <mesh position={[0, -h / 2, 0]}>
-        <boxGeometry args={[w + t, t, t]} />
-        <meshStandardMaterial color="#3a2d20" roughness={0.8} />
-      </mesh>
-      <mesh>
-        <boxGeometry args={[t * 0.6, h, t * 0.6]} />
-        <meshStandardMaterial color="#3a2d20" roughness={0.8} />
-      </mesh>
-    </group>
-  );
 }
 
 function Desk() {
@@ -161,7 +126,6 @@ export function StudyRoom({ progress }: { progress: MotionValue<number> }) {
       <StudyFloor />
       <Bookshelf x={-3.6} />
       <Bookshelf x={3.6} />
-      <WindowFrame />
       <Desk />
       <Chair />
       <SilhouetteFigure position={[0, 0, STUDY_FIGURE_Z]} />

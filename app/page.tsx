@@ -5,6 +5,7 @@ import { EyeSection } from "@/components/sections/EyeSection";
 import { IntroSection } from "@/components/sections/IntroSection";
 import { LevelSections } from "@/components/sections/LevelSections";
 import { OutroSection } from "@/components/sections/OutroSection";
+import { SummarySection } from "@/components/sections/SummarySection";
 import { TowerScene } from "@/components/tower/TowerScene";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import { LevelId } from "@/lib/types";
@@ -26,6 +27,7 @@ export default function Home() {
         <LevelSections />
         <EyeSection />
         <OutroSection />
+        <SummarySection onSelectLevel={setSelectedLevelId} />
       </main>
       <AchievementPanel levelId={selectedLevelId} onClose={() => setSelectedLevelId(null)} />
     </>

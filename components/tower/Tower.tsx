@@ -86,11 +86,11 @@ function TowerBase() {
   return (
     <group>
       <mesh position={[0, BASE_HEIGHT / 2, 0]} receiveShadow castShadow>
-        <cylinderGeometry args={[TOWER_RADIUS + 0.35, TOWER_RADIUS + 0.55, BASE_HEIGHT, 44]} />
+        <cylinderGeometry args={[TOWER_RADIUS + 0.22, TOWER_RADIUS + 0.36, BASE_HEIGHT, 44]} />
         <meshPhysicalMaterial color={MARBLE_SHADOW} roughness={0.5} clearcoat={0.3} clearcoatRoughness={0.35} />
       </mesh>
       <mesh position={[0, BASE_HEIGHT + 0.02, 0]}>
-        <cylinderGeometry args={[TOWER_RADIUS + 0.16, TOWER_RADIUS + 0.16, 0.06, 44]} />
+        <cylinderGeometry args={[TOWER_RADIUS + 0.12, TOWER_RADIUS + 0.12, 0.06, 44]} />
         <meshStandardMaterial color={TRIM} roughness={0.35} metalness={0.2} />
       </mesh>
     </group>

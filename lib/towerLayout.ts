@@ -4,8 +4,10 @@ export const INTRO_VH = 100;
 export const FLOOR_VH = 90;
 export const EYE_VH = 150;
 export const OUTRO_VH = 150;
+export const SUMMARY_VH = 130;
 
-export const TOTAL_VH = INTRO_VH + FLOOR_VH * TOTAL_FLOORS + EYE_VH + OUTRO_VH;
+export const TOTAL_VH =
+  INTRO_VH + FLOOR_VH * TOTAL_FLOORS + EYE_VH + OUTRO_VH + SUMMARY_VH;
 
 export const INTRO_FRACTION = INTRO_VH / TOTAL_VH;
 export const FLOORS_START_FRACTION = INTRO_FRACTION;
@@ -13,12 +15,16 @@ export const FLOORS_END_FRACTION = (INTRO_VH + FLOOR_VH * TOTAL_FLOORS) / TOTAL_
 export const EYE_START_FRACTION = FLOORS_END_FRACTION;
 export const EYE_END_FRACTION = (INTRO_VH + FLOOR_VH * TOTAL_FLOORS + EYE_VH) / TOTAL_VH;
 export const OUTRO_START_FRACTION = EYE_END_FRACTION;
+export const OUTRO_END_FRACTION =
+  (INTRO_VH + FLOOR_VH * TOTAL_FLOORS + EYE_VH + OUTRO_VH) / TOTAL_VH;
+export const SUMMARY_START_FRACTION = OUTRO_END_FRACTION;
 
 // The camera's move to its final study-room framing (and the room's own
-// reveal) both finish partway through the outro section, so the last
-// stretch of scroll just holds steady while the closing text is read.
+// reveal) both finish partway through the outro section, so the rest of the
+// outro — and the whole summary act that follows — just holds steady while
+// the closing text and the badge recap are read.
 export const OUTRO_CAMERA_DONE_FRACTION =
-  EYE_END_FRACTION + (1 - EYE_END_FRACTION) * 0.55;
+  OUTRO_START_FRACTION + (OUTRO_END_FRACTION - OUTRO_START_FRACTION) * 0.55;
 
 /** The scroll fraction [0-1] at which floor `index` (0-based, across the whole tower) finishes rising into place. */
 export function floorEndFraction(index: number): number {

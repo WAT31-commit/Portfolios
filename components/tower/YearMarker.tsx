@@ -2,10 +2,10 @@
 
 import { LevelMeta } from "@/lib/types";
 import {
-  BASE_HEIGHT,
-  FLOOR_HEIGHT,
   MARKER_ANGLE,
   MARKER_RADIUS_OFFSET,
+  MARKER_Y_BOTTOM,
+  MARKER_Y_STEP,
   TOWER_RADIUS,
 } from "@/lib/towerGeometry";
 import { EYE_START_FRACTION, LEVEL_LAYOUT, floorStartFraction } from "@/lib/towerLayout";
@@ -28,8 +28,8 @@ export function YearMarker({ level, index, progress, active, onSelect }: YearMar
   const wasVisible = useRef(false);
   const layout = LEVEL_LAYOUT.find((l) => l.id === level.id)!;
   const revealAt = floorStartFraction(layout.floorStart);
-  const midFloor = (layout.floorStart + layout.floorEnd) / 2;
-  const midY = BASE_HEIGHT + midFloor * FLOOR_HEIGHT;
+  // Evenly spaced by badge index (1-based) so the vertical gap is constant.
+  const markerY = MARKER_Y_BOTTOM + (index - 1) * MARKER_Y_STEP;
   const x = Math.cos(MARKER_ANGLE) * (TOWER_RADIUS + MARKER_RADIUS_OFFSET);
   const z = Math.sin(MARKER_ANGLE) * (TOWER_RADIUS + MARKER_RADIUS_OFFSET);
 
@@ -43,7 +43,7 @@ export function YearMarker({ level, index, progress, active, onSelect }: YearMar
   });
 
   return (
-    <group position={[x, midY, z]}>
+    <group position={[x, markerY, z]}>
       <Html center distanceFactor={8} zIndexRange={[10, 0]} style={{ pointerEvents: visible ? "auto" : "none" }}>
         <button
           type="button"
