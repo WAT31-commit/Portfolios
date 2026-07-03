@@ -22,7 +22,7 @@ export function Rivendell() {
       gradient={meta.gradient}
       emberColor={meta.emberColor}
     >
-      <p className="mx-auto mb-12 max-w-xl text-center text-white/70">
+      <p className="mx-auto mb-8 max-w-xl text-center text-sm text-white/70">
         In the library of the Last Homely House, every project earned a spine of its own.
         Pull one from the shelf to read its quest log.
       </p>
@@ -37,7 +37,7 @@ export function Rivendell() {
             transition={{ duration: 0.5, delay: i * 0.1 }}
             whileHover={{ y: -14, rotate: -1 }}
             onClick={() => setActiveQuest(quest)}
-            className="group flex h-64 w-14 flex-col items-center justify-between rounded-sm border border-white/10 px-1.5 py-4 text-center shadow-lg sm:h-72 sm:w-16"
+            className="group flex h-52 w-14 flex-col items-center justify-between rounded-sm border border-white/10 px-1.5 py-4 text-center shadow-lg sm:h-60 sm:w-16"
             style={{ backgroundColor: SPINE_COLORS[i % SPINE_COLORS.length] }}
           >
             <span className="text-[10px] font-semibold uppercase tracking-widest text-white/80">

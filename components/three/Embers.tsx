@@ -37,7 +37,7 @@ function Particles({ color, count }: { color: string; count: number }) {
     const points = pointsRef.current;
     if (!points) return;
     const posAttr = points.geometry.attributes.position as THREE.BufferAttribute;
-    const t = state.clock.getElapsedTime();
+    const t = state.clock.elapsedTime;
     for (let i = 0; i < count; i++) {
       // Offsets are derived from elapsed time relative to each particle's
       // fixed base position (not accumulated per-frame), so the motion looks

@@ -17,6 +17,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  /* The journey scrolls horizontally; each panel is sized to one screen, so
+     vertical overflow shouldn't normally occur. Hiding it is a safety net
+     against an accidental native vertical scrollbar appearing alongside
+     the horizontal one. Lenis needs `overflow-x` on <html> left alone
+     (auto/visible) — it stops scrolling if that axis is hidden/clipped. */
+  overflow-y: hidden;
 }
 
 html {

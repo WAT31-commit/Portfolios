@@ -21,11 +21,11 @@ export function OldForest() {
       gradient={meta.gradient}
       emberColor={meta.emberColor}
     >
-      <div className="mb-16">
-        <h3 className="mb-6 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">
+      <div className="mb-6">
+        <h3 className="mb-3 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">
           Skill Trees — click a leaf
         </h3>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-3">
           {skills.map((skill, i) => (
             <motion.button
               key={skill.id}
@@ -35,9 +35,9 @@ export function OldForest() {
               transition={{ duration: 0.4, delay: i * 0.05 }}
               whileHover={{ y: -4, scale: 1.05 }}
               onClick={() => setActiveSkill(skill)}
-              className="flex w-32 flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm transition hover:border-emerald-300/40 hover:bg-white/10"
+              className="flex w-24 flex-col items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 p-3 text-center backdrop-blur-sm transition hover:border-emerald-300/40 hover:bg-white/10"
             >
-              <span className="text-3xl">{skill.icon}</span>
+              <span className="text-2xl">{skill.icon}</span>
               <span className="text-xs font-medium text-white/85">{skill.name}</span>
               <span className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, idx) => (
@@ -57,15 +57,15 @@ export function OldForest() {
       </div>
 
       {forestQuests.length > 0 && (
-        <div className="mb-16">
-          <h3 className="mb-6 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">
+        <div className="mb-6">
+          <h3 className="mb-3 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">
             Early Quests
           </h3>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {forestQuests.map((q) => (
               <div
                 key={q.id}
-                className="rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
+                className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
               >
                 <h4 className="mb-1 font-semibold text-white">{q.title}</h4>
                 <p className="text-sm text-white/70">{q.tagline}</p>
@@ -76,10 +76,10 @@ export function OldForest() {
       )}
 
       <div>
-        <h3 className="mb-6 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">
+        <h3 className="mb-3 text-center text-sm font-semibold uppercase tracking-widest text-emerald-300/80">
           Fellowships & Activities
         </h3>
-        <div className="space-y-4">
+        <div className="space-y-2">
           {activities.map((a, i) => (
             <motion.div
               key={a.id}
@@ -87,13 +87,13 @@ export function OldForest() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="flex flex-col gap-1 rounded-lg border border-white/10 bg-white/5 p-4 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-1 rounded-lg border border-white/10 bg-white/5 p-3 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
-                <p className="font-semibold text-white">{a.title}</p>
-                <p className="text-sm text-white/60">{a.role}</p>
+                <p className="text-sm font-semibold text-white">{a.title}</p>
+                <p className="text-xs text-white/60">{a.role}</p>
               </div>
-              <div className="text-sm text-white/50 sm:text-right">
+              <div className="text-xs text-white/50 sm:text-right">
                 <p>{a.period}</p>
                 <p className="max-w-xs text-white/70">{a.detail}</p>
               </div>

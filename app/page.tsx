@@ -9,15 +9,17 @@ import { WorldMap } from "@/components/map/WorldMap";
 
 export default function Home() {
   return (
-    <main className="relative">
-      <HeroMap />
-      <Shire />
-      <OldForest />
-      <Rivendell />
-      <MinesMountains />
-      <DarkLand />
-      <TheEye />
+    <>
+      <main className="relative flex h-screen w-max">
+        <HeroMap />
+        <Shire />
+        <OldForest />
+        <Rivendell />
+        <MinesMountains />
+        <DarkLand />
+        <TheEye />
+      </main>
       <WorldMap />
-    </main>
+    </>
   );
 }

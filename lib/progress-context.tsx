@@ -18,6 +18,11 @@ export const CHAPTER_ORDER: ChapterId[] = [
   "the-eye",
 ];
 
+// The journey track is one horizontal row of panels: the hero, then one
+// panel per chapter. Used to remap raw 0-1 scroll progress (across the
+// whole track) into 0-1 progress across just the chapter waypoints.
+export const TOTAL_PANELS = CHAPTER_ORDER.length + 1;
+
 interface ProgressContextValue {
   furthestUnlocked: ChapterId;
   activeChapter: ChapterId;
