@@ -15,7 +15,7 @@ export function OutroSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.8 }}
-        className="pointer-events-auto w-full max-w-lg rounded-2xl border border-white/15 bg-gradient-to-br from-white/12 via-white/[0.06] to-white/[0.03] p-6 text-center shadow-2xl backdrop-blur-2xl sm:p-8"
+        className="pointer-events-auto w-full max-w-lg rounded-2xl border border-white/20 bg-gradient-to-br from-slate-900/50 via-slate-900/40 to-slate-900/35 p-6 text-center shadow-2xl backdrop-blur-2xl sm:p-8"
       >
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-200/80">
           Now, writing the next floor

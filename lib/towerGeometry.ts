@@ -19,6 +19,10 @@ export const TRIM = "#d4b45f"; // polished gold cornice
 // Where each level's floating year marker sits, and where the camera moves
 // to when that marker is clicked — a fixed angle keeps every marker (and
 // the zoomed-in framing) consistent and predictable.
+// The garden path (and its stairway) approaches the tower from the direction
+// the camera faces at the start of the scroll; the waterfall sits opposite.
+export const PATH_ANGLE = 0.4;
+
 export const MARKER_ANGLE = Math.PI / 7;
 export const MARKER_RADIUS_OFFSET = 1.1;
 export const FOCUS_RADIUS = 3.2;
