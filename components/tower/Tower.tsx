@@ -28,9 +28,14 @@ interface FloorProps {
   progress: MotionValue<number>;
 }
 
+// Within each floor's scroll window, the columns rise one by one over the
+// first slice, then the drum and gold rings fill in over the rest.
+const COLUMNS_PHASE = 0.55;
+
 /** One marble tier: a solid drum, a ring of columns standing proud of it, and a gilded cornice band. */
 function Floor({ floorIndex, progress }: FloorProps) {
-  const group = useRef<THREE.Group>(null);
+  const columnRefs = useRef<(THREE.Mesh | null)[]>([]);
+  const bodyRef = useRef<THREE.Group>(null);
   const start = floorStartFraction(floorIndex);
   const end = floorEndFraction(floorIndex);
   const radius = radiusForFloor(floorIndex);
@@ -41,11 +46,19 @@ function Floor({ floorIndex, progress }: FloorProps) {
   const columnColor = goldFloor ? MARBLE : GOLD;
 
   useFrame(() => {
-    if (!group.current) return;
     const reveal = THREE.MathUtils.clamp((progress.get() - start) / (end - start || 1), 0, 1);
-    const eased = reveal * reveal * (3 - 2 * reveal);
-    group.current.scale.setScalar(Math.max(eased, 0.0001));
-    group.current.position.y = y - (1 - eased) * 0.4;
+    const slice = COLUMNS_PHASE / COLUMN_COUNT;
+    columnRefs.current.forEach((column, i) => {
+      if (!column) return;
+      const t = THREE.MathUtils.clamp((reveal - i * slice) / slice, 0, 1);
+      const eased = t * t * (3 - 2 * t);
+      column.scale.setScalar(Math.max(eased, 0.0001));
+    });
+    if (bodyRef.current) {
+      const t = THREE.MathUtils.clamp((reveal - COLUMNS_PHASE) / (1 - COLUMNS_PHASE), 0, 1);
+      const eased = t * t * (3 - 2 * t);
+      bodyRef.current.scale.setScalar(Math.max(eased, 0.0001));
+    }
   });
 
   const columns = Array.from({ length: COLUMN_COUNT }, (_, i) => {
@@ -57,27 +70,36 @@ function Floor({ floorIndex, progress }: FloorProps) {
   });
 
   return (
-    <group ref={group} position={[0, y, 0]}>
-      {/* Gold plinth ring that separates this floor from the one below */}
-      <mesh position={[0, 0.03, 0]}>
-        <cylinderGeometry args={[radius + 0.12, radius + 0.16, 0.08, 44]} />
-        <meshStandardMaterial color={GOLD_DEEP} roughness={0.3} metalness={0.35} />
-      </mesh>
-      <mesh position={[0, FLOOR_HEIGHT / 2, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[radius, radius, FLOOR_HEIGHT, 44]} />
-        <meshPhysicalMaterial color={drumColor} roughness={0.35} clearcoat={0.28} clearcoatRoughness={0.4} />
-      </mesh>
+    <group position={[0, y, 0]}>
       {columns.map((c, i) => (
-        <mesh key={i} position={[c.x, FLOOR_HEIGHT / 2, c.z]} castShadow>
+        <mesh
+          key={i}
+          ref={(el) => {
+            columnRefs.current[i] = el;
+          }}
+          position={[c.x, FLOOR_HEIGHT / 2, c.z]}
+          castShadow
+        >
           <cylinderGeometry args={[COLUMN_RADIUS, COLUMN_RADIUS * 1.15, FLOOR_HEIGHT * 0.86, 10]} />
           <meshPhysicalMaterial color={columnColor} roughness={0.32} clearcoat={0.3} clearcoatRoughness={0.35} />
         </mesh>
       ))}
-      {/* Gold cornice capping the floor */}
-      <mesh position={[0, FLOOR_HEIGHT - 0.02, 0]}>
-        <cylinderGeometry args={[radius + 0.16, radius + 0.1, 0.09, 44]} />
-        <meshStandardMaterial color={TRIM} roughness={0.28} metalness={0.4} />
-      </mesh>
+      <group ref={bodyRef}>
+        {/* Gold plinth ring that separates this floor from the one below */}
+        <mesh position={[0, 0.03, 0]}>
+          <cylinderGeometry args={[radius + 0.12, radius + 0.16, 0.08, 44]} />
+          <meshStandardMaterial color={GOLD_DEEP} roughness={0.3} metalness={0.35} />
+        </mesh>
+        <mesh position={[0, FLOOR_HEIGHT / 2, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[radius, radius, FLOOR_HEIGHT, 44]} />
+          <meshPhysicalMaterial color={drumColor} roughness={0.35} clearcoat={0.28} clearcoatRoughness={0.4} />
+        </mesh>
+        {/* Gold cornice capping the floor */}
+        <mesh position={[0, FLOOR_HEIGHT - 0.02, 0]}>
+          <cylinderGeometry args={[radius + 0.16, radius + 0.1, 0.09, 44]} />
+          <meshStandardMaterial color={TRIM} roughness={0.28} metalness={0.4} />
+        </mesh>
+      </group>
     </group>
   );
 }

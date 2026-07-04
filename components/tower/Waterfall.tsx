@@ -79,13 +79,9 @@ export function Waterfall() {
         <meshBasicMaterial ref={waterMat} map={waterTex} transparent depthWrite={false} color="#e8f5ff" />
       </mesh>
 
-      {/* Pool and foam at the base */}
-      <mesh position={[0, 0.04, 0.9]}>
-        <cylinderGeometry args={[1.6, 1.7, 0.08, 28]} />
-        <meshStandardMaterial color="#66a8d8" roughness={0.25} transparent opacity={0.9} />
-      </mesh>
-      <mesh position={[0, 0.09, 0.05]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.55, 20]} />
+      {/* Foam where the sheet meets the lake (the lake itself lives in Garden's waterways) */}
+      <mesh position={[0, 0.03, 0.05]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.6, 20]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.55} depthWrite={false} />
       </mesh>
       {/* Mist puffs */}

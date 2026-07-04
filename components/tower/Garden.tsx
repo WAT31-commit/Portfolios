@@ -7,15 +7,17 @@ import * as THREE from "three";
 
 const STONE = "#d3cab2";
 const STONE_DARK = "#c0b598";
+const WATER = "#5fa7dc";
 const BUSH_GREENS = ["#3e7a33", "#4c8a3d", "#356b2c"];
 const CANOPY_GREENS = ["#4f8f3e", "#447f36", "#5a9c48"];
 const TRUNK = "#5a4126";
 const IRON = "#2e2c28";
 
-/** Flat stone slabs marching out from the stairway to the garden's edge. */
+/** Flat stone slabs marching out from the stairway to the garden's edge,
+ * skipping the span where the bridge carries the path over the moat. */
 function Pathway() {
-  const slabs = Array.from({ length: 7 }, (_, i) => ({
-    x: 2.1 + i * 0.92,
+  const slabs = [2.1, 4.15, 5.05, 5.95, 6.85, 7.75].map((x, i) => ({
+    x,
     rot: (i % 2 === 0 ? 1 : -1) * 0.05,
     w: 0.82 + (i % 3) * 0.06,
   }));
@@ -26,6 +28,53 @@ function Pathway() {
           <boxGeometry args={[s.w, 0.05, 1.15]} />
           <meshStandardMaterial color={i % 2 === 0 ? STONE : STONE_DARK} roughness={0.9} />
         </mesh>
+      ))}
+    </group>
+  );
+}
+
+/** The lake under the falls, the river running to the tower, and the moat
+ * ring the river feeds around the piazza. All in path-local coordinates —
+ * the waterfall sits at local -X, the path runs along +X. */
+function Waterways() {
+  const water = <meshStandardMaterial color={WATER} roughness={0.25} transparent opacity={0.9} />;
+  return (
+    <group>
+      <mesh position={[0, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[3.0, 3.7, 64]} />
+        {water}
+      </mesh>
+      <mesh position={[-5.7, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[4.6, 1.3]} />
+        {water}
+      </mesh>
+      <mesh position={[-8.6, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[2.5, 40]} />
+        {water}
+      </mesh>
+    </group>
+  );
+}
+
+/** A gently arched stone footbridge carrying the path over the moat. */
+function Bridge() {
+  const R = 1.5;
+  const segs = [-0.32, -0.16, 0, 0.16, 0.32];
+  return (
+    <group position={[3.35, 0, 0]}>
+      {segs.map((a, i) => (
+        <group key={i} position={[Math.sin(a) * R, 0.17 + (Math.cos(a) - 1) * R, 0]} rotation={[0, 0, -a]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[0.34, 0.06, 1.2]} />
+            <meshStandardMaterial color="#e6dfcc" roughness={0.6} />
+          </mesh>
+          {[-0.63, 0.63].map((z) => (
+            <mesh key={z} position={[0, 0.12, z]} castShadow>
+              <boxGeometry args={[0.34, 0.16, 0.07]} />
+              <meshStandardMaterial color="#cfc4a6" roughness={0.7} />
+            </mesh>
+          ))}
+        </group>
       ))}
     </group>
   );
@@ -159,25 +208,27 @@ function Fireflies() {
 /** The grounds around the tower: a slab path with a stairway up to the base,
  * bushes flanking the path, scattered trees, lampposts, and fireflies. */
 export function Garden() {
+  // Bush rows flank the path but skip the moat band (radius ~3.0-3.7).
   const bushes: { position: [number, number, number]; scale: number; shade: string }[] = [];
-  for (let i = 0; i < 6; i++) {
-    const x = 2.5 + i * 0.95;
+  [2.35, 4.3, 5.1, 5.9, 6.7, 7.5].forEach((x, i) => {
     bushes.push(
       { position: [x, 0, 0.95 + (i % 2) * 0.15], scale: 0.9 + (i % 3) * 0.2, shade: BUSH_GREENS[i % 3] },
       { position: [x + 0.4, 0, -(0.95 + ((i + 1) % 2) * 0.15)], scale: 0.85 + ((i + 1) % 3) * 0.2, shade: BUSH_GREENS[(i + 1) % 3] },
     );
-  }
+  });
 
   return (
     <group>
       {/* Everything path-aligned lives in a group rotated to the path angle. */}
       <group rotation={[0, -PATH_ANGLE, 0]}>
+        <Waterways />
+        <Bridge />
         <Pathway />
         <Stairway />
         {bushes.map((b, i) => (
           <Bush key={i} {...b} />
         ))}
-        <LampPost position={[3.1, 0, 1.35]} />
+        <LampPost position={[4.5, 0, 1.35]} />
         <LampPost position={[5.8, 0, -1.35]} />
         <GardenTree position={[4.4, 0, 2.9]} scale={1.5} shade={CANOPY_GREENS[0]} />
         <GardenTree position={[6.8, 0, -3.1]} scale={1.7} shade={CANOPY_GREENS[1]} />
