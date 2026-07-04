@@ -42,7 +42,7 @@ function Cloud({
       {puffs.map((p, i) => (
         <mesh key={i} position={[p.x, p.y, p.z]} scale={p.scale}>
           <sphereGeometry args={[0.6, 10, 10]} />
-          <meshStandardMaterial color="#ffffff" transparent opacity={opacity} roughness={1} />
+          <meshStandardMaterial color="#d7cdf2" transparent opacity={opacity} roughness={1} />
         </mesh>
       ))}
     </group>

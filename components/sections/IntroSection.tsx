@@ -10,7 +10,7 @@ export function IntroSection() {
       style={{ minHeight: `${INTRO_VH}vh` }}
       className="relative flex items-center justify-center px-6 text-center"
     >
-      <div style={{ textShadow: "0 2px 18px rgba(20,30,45,0.75), 0 1px 4px rgba(20,30,45,0.6)" }}>
+      <div style={{ textShadow: "0 2px 20px rgba(40,15,70,0.85), 0 1px 6px rgba(10,5,25,0.7)" }}>
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

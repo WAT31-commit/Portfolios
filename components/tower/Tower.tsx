@@ -1,6 +1,7 @@
 "use client";
 
 import { TOTAL_FLOORS } from "@/data/journey";
+import { getToonGradient } from "@/lib/toonGradient";
 import { floorEndFraction, floorStartFraction } from "@/lib/towerLayout";
 import {
   BASE_HEIGHT,
@@ -14,10 +15,13 @@ import {
   TOWER_RADIUS,
   TRIM,
 } from "@/lib/towerGeometry";
+import { Outlines } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { MotionValue } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
+
+const OUTLINE = "#160c29";
 
 function radiusForFloor(floorIndex: number) {
   return TOWER_RADIUS - floorIndex * 0.008;
@@ -34,6 +38,7 @@ const COLUMNS_PHASE = 0.55;
 
 /** One marble tier: a solid drum, a ring of columns standing proud of it, and a gilded cornice band. */
 function Floor({ floorIndex, progress }: FloorProps) {
+  const [gradientMap] = useState(getToonGradient);
   const columnRefs = useRef<(THREE.Mesh | null)[]>([]);
   const bodyRef = useRef<THREE.Group>(null);
   const start = floorStartFraction(floorIndex);
@@ -81,23 +86,26 @@ function Floor({ floorIndex, progress }: FloorProps) {
           castShadow
         >
           <cylinderGeometry args={[COLUMN_RADIUS, COLUMN_RADIUS * 1.15, FLOOR_HEIGHT * 0.86, 10]} />
-          <meshPhysicalMaterial color={columnColor} roughness={0.32} clearcoat={0.3} clearcoatRoughness={0.35} />
+          <meshToonMaterial color={columnColor} gradientMap={gradientMap} />
+          <Outlines thickness={0.012} color={OUTLINE} />
         </mesh>
       ))}
       <group ref={bodyRef}>
         {/* Gold plinth ring that separates this floor from the one below */}
         <mesh position={[0, 0.03, 0]}>
           <cylinderGeometry args={[radius + 0.12, radius + 0.16, 0.08, 44]} />
-          <meshStandardMaterial color={GOLD_DEEP} roughness={0.3} metalness={0.35} />
+          <meshToonMaterial color={GOLD_DEEP} gradientMap={gradientMap} />
         </mesh>
         <mesh position={[0, FLOOR_HEIGHT / 2, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[radius, radius, FLOOR_HEIGHT, 44]} />
-          <meshPhysicalMaterial color={drumColor} roughness={0.35} clearcoat={0.28} clearcoatRoughness={0.4} />
+          <meshToonMaterial color={drumColor} gradientMap={gradientMap} />
+          <Outlines thickness={0.02} color={OUTLINE} />
         </mesh>
         {/* Gold cornice capping the floor */}
         <mesh position={[0, FLOOR_HEIGHT - 0.02, 0]}>
           <cylinderGeometry args={[radius + 0.16, radius + 0.1, 0.09, 44]} />
-          <meshStandardMaterial color={TRIM} roughness={0.28} metalness={0.4} />
+          <meshToonMaterial color={TRIM} gradientMap={gradientMap} />
+          <Outlines thickness={0.015} color={OUTLINE} />
         </mesh>
       </group>
     </group>
@@ -105,15 +113,17 @@ function Floor({ floorIndex, progress }: FloorProps) {
 }
 
 function TowerBase() {
+  const [gradientMap] = useState(getToonGradient);
   return (
     <group>
       <mesh position={[0, BASE_HEIGHT / 2, 0]} receiveShadow castShadow>
         <cylinderGeometry args={[TOWER_RADIUS + 0.22, TOWER_RADIUS + 0.36, BASE_HEIGHT, 44]} />
-        <meshPhysicalMaterial color={MARBLE_SHADOW} roughness={0.5} clearcoat={0.3} clearcoatRoughness={0.35} />
+        <meshToonMaterial color={MARBLE_SHADOW} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
       <mesh position={[0, BASE_HEIGHT + 0.02, 0]}>
         <cylinderGeometry args={[TOWER_RADIUS + 0.12, TOWER_RADIUS + 0.12, 0.06, 44]} />
-        <meshStandardMaterial color={TRIM} roughness={0.35} metalness={0.2} />
+        <meshToonMaterial color={TRIM} gradientMap={gradientMap} />
       </mesh>
     </group>
   );

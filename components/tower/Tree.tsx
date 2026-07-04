@@ -1,10 +1,12 @@
 "use client";
 
+import { getToonGradient } from "@/lib/toonGradient";
 import { TOWER_RADIUS, TOWER_TOP_Y, TRIM } from "@/lib/towerGeometry";
 import { EYE_END_FRACTION, EYE_START_FRACTION } from "@/lib/towerLayout";
+import { Outlines } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { MotionValue } from "framer-motion";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 function smoothstep(edge0: number, edge1: number, x: number) {
@@ -12,13 +14,15 @@ function smoothstep(edge0: number, edge1: number, x: number) {
   return t * t * (3 - 2 * t);
 }
 
-const FOLIAGE = "#5f8f4e";
-const FOLIAGE_DEEP = "#4a7a3d";
+const OUTLINE = "#160c29";
+const FOLIAGE = "#5ec468";
+const FOLIAGE_DEEP = "#379154";
 const TRUNK = "#5a4126";
 
 /** A platformed "tree of knowledge" that crowns the tower: a marble dais, a
  * gnarled trunk, a green canopy, and golden apples that glow as it grows in. */
 export function Tree({ progress }: { progress: MotionValue<number> }) {
+  const [gradientMap] = useState(getToonGradient);
   const group = useRef<THREE.Group>(null);
   const canopy = useRef<THREE.Group>(null);
   const glow = useRef<THREE.PointLight>(null);
@@ -65,22 +69,24 @@ export function Tree({ progress }: { progress: MotionValue<number> }) {
       {/* Marble dais with a gold rim */}
       <mesh position={[0, 0.06, 0]} receiveShadow>
         <cylinderGeometry args={[TOWER_RADIUS + 0.34, TOWER_RADIUS + 0.42, 0.12, 40]} />
-        <meshPhysicalMaterial color="#f2ede2" roughness={0.4} clearcoat={0.3} clearcoatRoughness={0.4} />
+        <meshToonMaterial color="#f2ede2" gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
       <mesh position={[0, 0.13, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[TOWER_RADIUS + 0.36, 0.03, 10, 40]} />
-        <meshStandardMaterial color={TRIM} roughness={0.3} metalness={0.4} />
+        <meshToonMaterial color={TRIM} gradientMap={gradientMap} />
       </mesh>
       {/* Soil mound */}
       <mesh position={[0, 0.18, 0]}>
         <sphereGeometry args={[0.28, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2]} />
-        <meshStandardMaterial color="#4a3a26" roughness={1} />
+        <meshToonMaterial color="#4a3a26" gradientMap={gradientMap} />
       </mesh>
 
       {/* Trunk */}
       <mesh position={[0, 0.55, 0]} castShadow>
         <cylinderGeometry args={[0.09, 0.16, 0.85, 8]} />
-        <meshStandardMaterial color={TRUNK} roughness={0.9} />
+        <meshToonMaterial color={TRUNK} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
 
       {/* Canopy + apples (sway together) */}
@@ -88,7 +94,8 @@ export function Tree({ progress }: { progress: MotionValue<number> }) {
         {foliage.map((f, i) => (
           <mesh key={i} position={f.pos} castShadow>
             <icosahedronGeometry args={[f.r, 1]} />
-            <meshStandardMaterial color={f.c} roughness={0.85} flatShading />
+            <meshToonMaterial color={f.c} gradientMap={gradientMap} />
+            <Outlines thickness={0.02} color={OUTLINE} />
           </mesh>
         ))}
         {apples.map((pos, i) => (
@@ -97,7 +104,7 @@ export function Tree({ progress }: { progress: MotionValue<number> }) {
             <meshStandardMaterial
               color="#ffd75e"
               emissive="#f0b526"
-              emissiveIntensity={1}
+              emissiveIntensity={1.6}
               roughness={0.2}
               metalness={0.7}
             />

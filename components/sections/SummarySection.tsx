@@ -18,7 +18,7 @@ export function SummarySection({ onSelectLevel }: { onSelectLevel: (id: LevelId)
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8 }}
-        className="pointer-events-auto w-full max-w-4xl rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/50 via-slate-900/40 to-slate-900/35 p-8 text-center shadow-2xl backdrop-blur-2xl sm:p-10"
+        className="pointer-events-auto w-full max-w-4xl rounded-3xl border border-purple-200/20 bg-gradient-to-br from-purple-950/55 via-slate-900/45 to-indigo-950/40 p-8 text-center shadow-2xl backdrop-blur-2xl sm:p-10"
       >
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-200/80">
           The tower, floor by floor

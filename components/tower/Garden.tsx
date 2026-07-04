@@ -1,21 +1,25 @@
 "use client";
 
+import { getToonGradient } from "@/lib/toonGradient";
 import { PATH_ANGLE } from "@/lib/towerGeometry";
+import { Outlines } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-const STONE = "#d3cab2";
-const STONE_DARK = "#c0b598";
-const WATER = "#5fa7dc";
-const BUSH_GREENS = ["#3e7a33", "#4c8a3d", "#356b2c"];
-const CANOPY_GREENS = ["#4f8f3e", "#447f36", "#5a9c48"];
+const OUTLINE = "#160c29";
+const STONE = "#d9d0ea";
+const STONE_DARK = "#c2b6dd";
+const WATER = "#3d6fb8";
+const BUSH_GREENS = ["#3f9152", "#4fab5f", "#2f7a44"];
+const CANOPY_GREENS = ["#57b563", "#3f9c56", "#6bc76e"];
 const TRUNK = "#5a4126";
-const IRON = "#2e2c28";
+const IRON = "#211d33";
 
 /** Flat stone slabs marching out from the stairway to the garden's edge,
  * skipping the span where the bridge carries the path over the moat. */
 function Pathway() {
+  const [gradientMap] = useState(getToonGradient);
   const slabs = [2.1, 4.15, 5.05, 5.95, 6.85, 7.75].map((x, i) => ({
     x,
     rot: (i % 2 === 0 ? 1 : -1) * 0.05,
@@ -26,7 +30,7 @@ function Pathway() {
       {slabs.map((s, i) => (
         <mesh key={i} position={[s.x, 0.02, 0]} rotation={[0, s.rot, 0]} receiveShadow>
           <boxGeometry args={[s.w, 0.05, 1.15]} />
-          <meshStandardMaterial color={i % 2 === 0 ? STONE : STONE_DARK} roughness={0.9} />
+          <meshToonMaterial color={i % 2 === 0 ? STONE : STONE_DARK} gradientMap={gradientMap} />
         </mesh>
       ))}
     </group>
@@ -37,7 +41,7 @@ function Pathway() {
  * ring the river feeds around the piazza. All in path-local coordinates —
  * the waterfall sits at local -X, the path runs along +X. */
 function Waterways() {
-  const water = <meshStandardMaterial color={WATER} roughness={0.25} transparent opacity={0.9} />;
+  const water = <meshStandardMaterial color={WATER} roughness={0.2} transparent opacity={0.88} />;
   return (
     <group>
       <mesh position={[0, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -58,6 +62,7 @@ function Waterways() {
 
 /** A gently arched stone footbridge carrying the path over the moat. */
 function Bridge() {
+  const [gradientMap] = useState(getToonGradient);
   const R = 1.5;
   const segs = [-0.32, -0.16, 0, 0.16, 0.32];
   return (
@@ -66,12 +71,14 @@ function Bridge() {
         <group key={i} position={[Math.sin(a) * R, 0.17 + (Math.cos(a) - 1) * R, 0]} rotation={[0, 0, -a]}>
           <mesh castShadow receiveShadow>
             <boxGeometry args={[0.34, 0.06, 1.2]} />
-            <meshStandardMaterial color="#e6dfcc" roughness={0.6} />
+            <meshToonMaterial color="#efe9f7" gradientMap={gradientMap} />
+            <Outlines thickness={0.015} color={OUTLINE} />
           </mesh>
           {[-0.63, 0.63].map((z) => (
             <mesh key={z} position={[0, 0.12, z]} castShadow>
               <boxGeometry args={[0.34, 0.16, 0.07]} />
-              <meshStandardMaterial color="#cfc4a6" roughness={0.7} />
+              <meshToonMaterial color="#d9cfe8" gradientMap={gradientMap} />
+              <Outlines thickness={0.015} color={OUTLINE} />
             </mesh>
           ))}
         </group>
@@ -82,6 +89,7 @@ function Bridge() {
 
 /** Three marble steps climbing from the path up to the tower's base. */
 function Stairway() {
+  const [gradientMap] = useState(getToonGradient);
   const steps = [
     { x: 1.7, top: 0.12 },
     { x: 1.4, top: 0.24 },
@@ -92,7 +100,8 @@ function Stairway() {
       {steps.map((s, i) => (
         <mesh key={i} position={[s.x, s.top / 2, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.32, s.top, 1.25]} />
-          <meshStandardMaterial color="#e9e2d2" roughness={0.55} />
+          <meshToonMaterial color="#eee7f6" gradientMap={gradientMap} />
+          <Outlines thickness={0.015} color={OUTLINE} />
         </mesh>
       ))}
     </group>
@@ -100,59 +109,70 @@ function Stairway() {
 }
 
 function Bush({ position, scale, shade }: { position: [number, number, number]; scale: number; shade: string }) {
+  const [gradientMap] = useState(getToonGradient);
   return (
     <group position={position} scale={scale}>
       <mesh position={[0, 0.16, 0]} castShadow>
         <icosahedronGeometry args={[0.24, 1]} />
-        <meshStandardMaterial color={shade} roughness={0.95} flatShading />
+        <meshToonMaterial color={shade} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
       <mesh position={[0.16, 0.1, 0.08]} castShadow>
         <icosahedronGeometry args={[0.15, 1]} />
-        <meshStandardMaterial color={BUSH_GREENS[2]} roughness={0.95} flatShading />
+        <meshToonMaterial color={BUSH_GREENS[2]} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
     </group>
   );
 }
 
 function GardenTree({ position, scale, shade }: { position: [number, number, number]; scale: number; shade: string }) {
+  const [gradientMap] = useState(getToonGradient);
   return (
     <group position={position} scale={scale}>
       <mesh position={[0, 0.45, 0]} castShadow>
         <cylinderGeometry args={[0.05, 0.09, 0.9, 7]} />
-        <meshStandardMaterial color={TRUNK} roughness={0.9} />
+        <meshToonMaterial color={TRUNK} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
       <mesh position={[0, 1.05, 0]} castShadow>
         <icosahedronGeometry args={[0.45, 1]} />
-        <meshStandardMaterial color={shade} roughness={0.9} flatShading />
+        <meshToonMaterial color={shade} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
       <mesh position={[0.28, 0.85, 0.1]} castShadow>
         <icosahedronGeometry args={[0.28, 1]} />
-        <meshStandardMaterial color={CANOPY_GREENS[1]} roughness={0.9} flatShading />
+        <meshToonMaterial color={CANOPY_GREENS[1]} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
       <mesh position={[-0.25, 0.9, -0.12]} castShadow>
         <icosahedronGeometry args={[0.26, 1]} />
-        <meshStandardMaterial color={CANOPY_GREENS[2]} roughness={0.9} flatShading />
+        <meshToonMaterial color={CANOPY_GREENS[2]} gradientMap={gradientMap} />
+        <Outlines thickness={0.02} color={OUTLINE} />
       </mesh>
     </group>
   );
 }
 
 function LampPost({ position }: { position: [number, number, number] }) {
+  const [gradientMap] = useState(getToonGradient);
   return (
     <group position={position}>
       <mesh position={[0, 0.7, 0]} castShadow>
         <cylinderGeometry args={[0.028, 0.05, 1.4, 8]} />
-        <meshStandardMaterial color={IRON} roughness={0.5} metalness={0.4} />
+        <meshToonMaterial color={IRON} gradientMap={gradientMap} />
+        <Outlines thickness={0.015} color={OUTLINE} />
       </mesh>
       <mesh position={[0, 1.44, 0]}>
         <sphereGeometry args={[0.085, 12, 12]} />
-        <meshStandardMaterial color="#fff0c0" emissive="#ffd876" emissiveIntensity={1.1} />
+        <meshStandardMaterial color="#fff0c0" emissive="#ffd876" emissiveIntensity={1.8} />
       </mesh>
       <mesh position={[0, 1.55, 0]}>
         <coneGeometry args={[0.12, 0.12, 8]} />
-        <meshStandardMaterial color={IRON} roughness={0.5} metalness={0.4} />
+        <meshToonMaterial color={IRON} gradientMap={gradientMap} />
+        <Outlines thickness={0.015} color={OUTLINE} />
       </mesh>
-      <pointLight position={[0, 1.42, 0]} color="#ffd876" intensity={0.7} distance={3.5} />
+      <pointLight position={[0, 1.42, 0]} color="#ffd876" intensity={0.9} distance={3.5} />
     </group>
   );
 }
