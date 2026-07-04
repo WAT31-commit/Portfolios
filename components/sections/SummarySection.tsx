@@ -18,14 +18,19 @@ export function SummarySection({ onSelectLevel }: { onSelectLevel: (id: LevelId)
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8 }}
-        className="pointer-events-auto w-full max-w-4xl rounded-3xl border border-purple-200/20 bg-gradient-to-br from-purple-950/55 via-slate-900/45 to-indigo-950/40 p-8 text-center shadow-2xl backdrop-blur-2xl sm:p-10"
+        className="pointer-events-auto relative w-full max-w-4xl overflow-hidden rounded-3xl border border-amber-200/15 bg-black p-8 text-center shadow-2xl sm:p-12"
       >
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-200/80">
+        {/* Soft corner glows for depth, kept subtle so the field reads as black */}
+        <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-amber-300/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-purple-400/10 blur-3xl" />
+
+        <p className="relative mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-amber-200/80">
           The tower, floor by floor
         </p>
-        <h2 className="mb-8 text-2xl font-bold text-white sm:text-3xl">Every chapter, at a glance</h2>
+        <h2 className="relative text-2xl font-bold text-white sm:text-3xl">Every chapter, at a glance</h2>
+        <div className="relative mx-auto mt-5 mb-10 h-px w-24 bg-gradient-to-r from-transparent via-amber-300/70 to-transparent" />
 
-        <div className="flex flex-wrap items-start justify-center gap-5 sm:gap-8">
+        <div className="relative flex flex-wrap items-start justify-center gap-5 sm:gap-8">
           {levels.map((level, i) => (
             <button
               key={level.id}
@@ -34,7 +39,7 @@ export function SummarySection({ onSelectLevel }: { onSelectLevel: (id: LevelId)
               className="group flex w-28 flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1"
             >
               <span
-                className="flex h-16 w-16 items-center justify-center rounded-full p-[3px] shadow-lg transition-shadow group-hover:shadow-amber-300/30"
+                className="flex h-16 w-16 items-center justify-center rounded-full p-[3px] shadow-lg transition-shadow group-hover:shadow-amber-300/40"
                 style={{ background: "linear-gradient(145deg, #e8d29a, #b9974a)" }}
               >
                 <span
@@ -56,7 +61,7 @@ export function SummarySection({ onSelectLevel }: { onSelectLevel: (id: LevelId)
           ))}
         </div>
 
-        <p className="mt-8 text-xs text-white/50">Tap any badge to revisit that chapter.</p>
+        <p className="relative mt-10 text-xs text-white/40">Tap any badge to revisit that chapter.</p>
       </motion.div>
     </section>
   );

@@ -13,7 +13,6 @@ import { StudyRoom } from "./StudyRoom";
 import { Tower } from "./Tower";
 import { TowerMarkers } from "./TowerMarkers";
 import { Tree } from "./Tree";
-import { Waterfall } from "./Waterfall";
 
 const TOWER_CLOUD_HEIGHT = 6.5;
 
@@ -46,7 +45,6 @@ export function TowerScene({
         <Moon />
         <Ground />
         <Garden />
-        <Waterfall />
         <Tower progress={progress} />
         <TowerMarkers progress={progress} selectedLevelId={selectedLevelId} onSelectLevel={onSelectLevel} />
         <Tree progress={progress} />
